@@ -38,6 +38,8 @@ export function InteractiveLanding() {
   const springConfig = { damping: 20, stiffness: 200 };
   const smoothedMouseX = useSpring(mouseX, springConfig);
 
+  const lineAttractionY = useSpring(0, { damping: 15, stiffness: 150 });
+
   const bend = useTransform(
     smoothedMouseX,
     (val) => {
@@ -49,6 +51,8 @@ export function InteractiveLanding() {
       clamp: false,
     }
   );
+
+  const lineY = useTransform(lineAttractionY, (v) => `calc(-50% + ${v}px)`);
 
   useEffect(() => {
     gsap.registerPlugin(ScrambleTextPlugin);
@@ -69,8 +73,12 @@ export function InteractiveLanding() {
           const index = Math.floor(xPos / segmentWidth);
           setRevealedTech(tech[index] || null);
           setCursorPos({ x: e.clientX, y: e.clientY });
+
+          const distance = e.clientY - (top + height / 2);
+          lineAttractionY.set(distance * 0.1);
         } else {
           setRevealedTech(null);
+          lineAttractionY.set(0);
         }
       }
       mouseX.set(e.clientX);
@@ -78,6 +86,7 @@ export function InteractiveLanding() {
 
     const handleMouseLeave = () => {
       setRevealedTech(null);
+      lineAttractionY.set(0);
       if (typeof window !== 'undefined') {
         mouseX.set(window.innerWidth / 2);
       }
@@ -93,7 +102,7 @@ export function InteractiveLanding() {
         handleMouseLeave
       );
     };
-  }, [mouseX]);
+  }, [mouseX, lineAttractionY]);
 
   useLayoutEffect(() => {
     const target = techTextRef.current;
@@ -143,7 +152,7 @@ export function InteractiveLanding() {
           <ForgeHiveLogo className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary" />
         </motion.div>
 
-        <div className="text-right absolute bottom-0 right-4 md:right-8 pt-[100px]">
+        <div className="text-right absolute right-4 md:right-8 pt-[100px]">
           <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
             H
           </span>
@@ -162,7 +171,7 @@ export function InteractiveLanding() {
           className="w-full h-px bg-border"
           style={{
             rotateX: bend,
-            y: '-50%',
+            y: lineY,
             position: 'absolute',
             top: '50%',
           }}
