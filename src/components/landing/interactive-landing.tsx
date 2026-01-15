@@ -33,6 +33,8 @@ export function InteractiveLanding() {
   const pathRef = useRef<SVGPathElement>(null);
   const techTextRef = useRef<HTMLSpanElement>(null);
   const prevRevealedTech = useRef<string | null>(null);
+  const fRef = useRef<HTMLDivElement>(null);
+  const hRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
 
@@ -171,6 +173,29 @@ export function InteractiveLanding() {
     prevRevealedTech.current = revealedTech;
   }, [revealedTech]);
 
+  useLayoutEffect(() => {
+    if (fRef.current && hRef.current) {
+      const tl = gsap.timeline();
+      tl.from(
+        fRef.current,
+        {
+          y: '-50vh',
+          duration: 1,
+          ease: 'power3.out',
+        },
+        0
+      ).from(
+        hRef.current,
+        {
+          y: '50vh',
+          duration: 1,
+          ease: 'power3.out',
+        },
+        0
+      );
+    }
+  }, []);
+
 
   if (!isMounted) {
     return null; // Or a loading spinner
@@ -181,13 +206,10 @@ export function InteractiveLanding() {
       <LandingHeader />
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full h-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="absolute top-0 left-0 p-4 md:p-8">
+        <div ref={fRef} className="absolute top-0 left-0 p-4 md:p-8">
           <div className="text-[50vh] font-bold leading-none text-foreground">
             F
           </div>
-          <p className="text-muted-foreground lowercase text-sm ml-1 -mt-4">
-            dip open source.
-          </p>
         </div>
 
         <motion.div
@@ -197,9 +219,12 @@ export function InteractiveLanding() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <ForgeHiveLogo className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary" />
+          <p className="absolute -bottom-8 text-muted-foreground lowercase text-sm">
+            dip open source.
+          </p>
         </motion.div>
 
-        <div className="absolute bottom-0 right-0 p-4 md:p-8">
+        <div ref={hRef} className="absolute bottom-0 right-0 p-4 md:p-8">
           <div className="text-[50vh] font-bold leading-none text-foreground">
             H
           </div>
