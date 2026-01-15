@@ -181,13 +181,18 @@ export function InteractiveLanding() {
       <LandingHeader />
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-left absolute -top-28 left-4 md:left-8 pt-[50px]">
-          <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
-            F
-          </span>
-          <span className="text-[4vw] md:text-[3vw] lg:text-[2.5vw] text-muted-foreground">
-            orge
-          </span>
+        <div className="absolute -top-28 left-4 md:left-8 pt-[50px]">
+          <div className="flex items-baseline">
+            <span className="text-[20vw] md:text-[18vw] lg:text-[15vw] font-bold leading-none text-secondary">
+              F
+            </span>
+            <span className="text-4xl md:text-5xl font-headline text-muted-foreground -ml-3 md:-ml-6">
+              orge
+            </span>
+          </div>
+          <p className="text-muted-foreground lowercase text-lg ml-1 -mt-2">
+            dip open source.
+          </p>
         </div>
 
         <motion.div
@@ -199,13 +204,15 @@ export function InteractiveLanding() {
           <ForgeHiveLogo className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary" />
         </motion.div>
 
-        <div className="text-right absolute right-4 md:right-8 pt-[100px]">
-          <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
-            H
-          </span>
-          <span className="text-[4vw] md:text-[3vw] lg:text-[2.5vw] text-muted-foreground">
-            ive
-          </span>
+        <div className="absolute right-4 md:right-8 pt-[100px]">
+          <div className="flex items-baseline justify-end">
+            <span className="text-[20vw] md:text-[18vw] lg:text-[15vw] font-bold leading-none text-secondary">
+              H
+            </span>
+            <span className="text-4xl md:text-5xl font-headline text-muted-foreground -ml-3 md:-ml-6">
+              ive
+            </span>
+          </div>
         </div>
       </div>
 
