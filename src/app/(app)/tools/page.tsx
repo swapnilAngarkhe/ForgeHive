@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import {
@@ -83,11 +84,11 @@ const defaultTools: Tool[] = [
   },
   {
     id: 6,
-    name: 'Notion',
-    slug: 'notion',
+    name: 'Obsidian',
+    slug: 'obsidian',
     description:
-      'The all-in-one workspace for your notes, tasks, wikis, and databases.',
-    url: 'https://www.notion.so/',
+      'Obsidian is a powerful knowledge base on top of a local folder of plain text Markdown files.',
+    url: 'https://obsidian.md/',
     category_id: 5,
     created_by: 'system',
     created_at: new Date().toISOString(),
