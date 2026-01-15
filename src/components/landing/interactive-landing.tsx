@@ -86,7 +86,7 @@ export function InteractiveLanding() {
       <LandingHeader />
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-right">
+        <div className="text-left absolute top-0 left-4 md:left-8">
           <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
             F
           </span>
@@ -96,7 +96,7 @@ export function InteractiveLanding() {
         </div>
 
         <motion.div
-          className="relative flex items-center justify-center order-first my-8 md:my-0 md:order-none"
+          className="relative flex items-center justify-center col-start-2"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
