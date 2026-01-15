@@ -26,7 +26,7 @@ const defaultTools: Tool[] = [
     created_by: 'system',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    categories: { category_name: 'UI Libraries' },
+    categories: { category_name: 'UI' },
   },
   {
     id: 2,
@@ -65,7 +65,7 @@ const defaultTools: Tool[] = [
     created_by: 'system',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    categories: { category_name: 'CSS Frameworks' },
+    categories: { category_name: 'CSS' },
   },
   {
     id: 5,
@@ -80,19 +80,64 @@ const defaultTools: Tool[] = [
     updated_at: new Date().toISOString(),
     categories: { category_name: 'Icons' },
   },
+  {
+    id: 6,
+    name: 'Notion',
+    slug: 'notion',
+    description:
+      'The all-in-one workspace for your notes, tasks, wikis, and databases.',
+    url: 'https://www.notion.so/',
+    category_id: 5,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'Productivity' },
+  },
+  {
+    id: 7,
+    name: 'Lodash',
+    slug: 'lodash',
+    description:
+      'A modern JavaScript utility library delivering modularity, performance & extras.',
+    url: 'https://lodash.com/',
+    category_id: 6,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'Javascript' },
+  },
+  {
+    id: 8,
+    name: 'zx',
+    slug: 'zx',
+    description:
+      'A tool for writing better scripts. It provides useful wrappers around child_process, escapes arguments and gives sensible defaults.',
+    url: 'https://github.com/google/zx',
+    category_id: 7,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'Scripting' },
+  },
 ];
 
 function getToolImage(tool: Tool) {
   const uiImage = PlaceHolderImages.find((img) => img.id === 'ui-tool-1');
   const apiImage = PlaceHolderImages.find((img) => img.id === 'api-tool-1');
+  const prodImage = PlaceHolderImages.find((img) => img.id === 'productivity-1');
 
   switch (tool.categories.category_name) {
-    case 'UI Libraries':
-    case 'CSS Frameworks':
+    case 'UI':
+    case 'CSS':
     case 'Icons':
+    case 'Frameworks':
       return uiImage;
     case 'Backend Services':
+    case 'Javascript':
+    case 'Scripting':
       return apiImage;
+    case 'Productivity':
+      return prodImage;
     default:
       return uiImage;
   }
@@ -115,61 +160,108 @@ export default async function ToolsPage({
   }
 
   const { data: dbTools, error } = await query;
-  
+
   const allTools = [...defaultTools, ...(dbTools || [])];
 
-  const uniqueTools = Array.from(new Map(allTools.map(tool => [tool.name, tool])).values());
+  const uniqueTools = Array.from(
+    new Map(allTools.map((tool) => [tool.name, tool])).values()
+  );
 
+  const allCategories = uniqueTools
+    .map((tool) => tool.categories?.category_name)
+    .filter((c): c is string => !!c);
+  const uniqueCategories = ['All', ...Array.from(new Set(allCategories))];
+
+  const selectedCategory = searchParams?.category;
+
+  const filteredTools =
+    selectedCategory && selectedCategory !== 'All'
+      ? uniqueTools.filter(
+          (tool) => tool.categories.category_name === selectedCategory
+        )
+      : uniqueTools;
 
   if (error) {
     console.error('Error fetching tools:', error);
-    // You can render an error state here
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {uniqueTools && uniqueTools.length > 0 ? (
-        uniqueTools.map((tool) => {
-          const image = getToolImage(tool as Tool);
-          return (
-            <Card key={tool.id} className="flex flex-col">
-              {image && (
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={image.imageUrl}
-                    alt={tool.name}
-                    fill
-                    className="object-cover rounded-t-lg"
-                    data-ai-hint={image.imageHint}
-                  />
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle>{tool.name}</CardTitle>
-                <CardDescription className="line-clamp-2 h-10">
-                  {tool.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                {tool.categories && (
-                  <Badge variant="secondary">
-                    {tool.categories.category_name}
-                  </Badge>
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center flex-wrap gap-2">
+        <span className="text-sm font-semibold">Categories:</span>
+        {uniqueCategories.map((category) => (
+          <Link
+            key={category}
+            href={
+              category === 'All'
+                ? '/tools'
+                : `/tools?category=${encodeURIComponent(category)}`
+            }
+          >
+            <Badge
+              variant={
+                selectedCategory === category ||
+                (!selectedCategory && category === 'All')
+                  ? 'default'
+                  : 'secondary'
+              }
+              className="cursor-pointer"
+            >
+              #{category}
+            </Badge>
+          </Link>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredTools && filteredTools.length > 0 ? (
+          filteredTools.map((tool) => {
+            const image = getToolImage(tool as Tool);
+            return (
+              <Card key={tool.id} className="flex flex-col">
+                {image && (
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={image.imageUrl}
+                      alt={tool.name}
+                      fill
+                      className="object-cover rounded-t-lg"
+                      data-ai-hint={image.imageHint}
+                    />
+                  </div>
                 )}
-              </CardContent>
-              <CardFooter>
-                <Button asChild>
-                  <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                    Visit
-                  </a>
-                </Button>
-              </CardFooter>
-            </Card>
-          );
-        })
-      ) : (
-        <p>No tools found.</p>
-      )}
+                <CardHeader>
+                  <CardTitle>{tool.name}</CardTitle>
+                  <CardDescription className="line-clamp-2 h-10">
+                    {tool.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  {tool.categories && (
+                    <Badge variant="secondary">
+                      #{tool.categories.category_name}
+                    </Badge>
+                  )}
+                </CardContent>
+                <CardFooter>
+                  <Button asChild>
+                    <a
+                      href={tool.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Visit
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })
+        ) : (
+          <div className="col-span-full text-center py-10">
+            <p>No tools found for this category.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
