@@ -84,7 +84,7 @@ export function InteractiveLanding() {
             const px = (width / segments) * i;
             // Gaussian falloff
             const gauss = Math.exp(-((px - xInRect) ** 2) / (2 * spread ** 2));
-            const displacement = distFromCenter * gauss;
+            const displacement = (distFromCenter * 1.5) * gauss;
             const py = centerY + displacement;
             d += ` L ${px} ${py}`;
           }
