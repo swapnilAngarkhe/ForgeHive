@@ -25,10 +25,11 @@ const tech = [
 export function InteractiveLanding() {
   const [revealedTech, setRevealedTech] = useState<string | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isMounted, setIsMounted] = useState(false);
 
   const lineRef = useRef<HTMLDivElement>(null);
 
-  const mouseX = useMotionValue(Infinity);
+  const mouseX = useMotionValue(0);
 
   const springConfig = { damping: 20, stiffness: 200 };
   const smoothedMouseX = useSpring(mouseX, springConfig);
@@ -46,6 +47,11 @@ export function InteractiveLanding() {
   );
 
   useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== 'undefined') {
+      mouseX.set(window.innerWidth / 2);
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       if (lineRef.current) {
         const { left, top, width, height } = lineRef.current.getBoundingClientRect();
@@ -66,7 +72,9 @@ export function InteractiveLanding() {
 
     const handleMouseLeave = () => {
       setRevealedTech(null);
-      mouseX.set(window.innerWidth / 2);
+      if (typeof window !== 'undefined') {
+        mouseX.set(window.innerWidth / 2);
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -80,6 +88,10 @@ export function InteractiveLanding() {
       );
     };
   }, [mouseX]);
+
+  if (!isMounted) {
+    return null; // Or a loading spinner
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center w-full min-h-screen overflow-hidden bg-background font-headline">
@@ -104,7 +116,7 @@ export function InteractiveLanding() {
           <ForgeHiveLogo className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary" />
         </motion.div>
 
-        <div className="text-left absolute -top-28 right-4 md:right-8 pt-[50px]">
+        <div className="text-right absolute bottom-0 right-4 md:right-8 pb-[50px]">
           <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
             H
           </span>
