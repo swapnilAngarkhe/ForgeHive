@@ -182,13 +182,8 @@ export function InteractiveLanding() {
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full h-full max-w-7xl mx-auto px-4 md:px-8">
         <div className="absolute top-0 left-0 p-4 md:p-8">
-          <div className="flex items-baseline">
-            <span className="text-[30vw] md:text-[25vw] lg:text-[22vw] font-bold leading-none text-secondary">
-              F
-            </span>
-            <span className="text-2xl md:text-3xl font-headline text-muted-foreground -ml-6 md:-ml-8">
-              orge
-            </span>
+          <div className="text-[50vh] font-bold leading-none text-secondary">
+            F
           </div>
           <p className="text-muted-foreground lowercase text-sm ml-1 -mt-4">
             dip open source.
@@ -205,13 +200,8 @@ export function InteractiveLanding() {
         </motion.div>
 
         <div className="absolute bottom-0 right-0 p-4 md:p-8">
-          <div className="flex items-baseline justify-end">
-            <span className="text-[30vw] md:text-[25vw] lg:text-[22vw] font-bold leading-none text-secondary">
-              H
-            </span>
-            <span className="text-2xl md:text-3xl font-headline text-muted-foreground -ml-6 md:-ml-8">
-              ive
-            </span>
+          <div className="text-[50vh] font-bold leading-none text-secondary">
+            H
           </div>
         </div>
       </div>
