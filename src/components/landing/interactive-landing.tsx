@@ -6,7 +6,9 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { ForgeHiveLogo } from '../icons/logo';
 import { LandingHeader } from './landing-header';
 
@@ -28,6 +30,8 @@ export function InteractiveLanding() {
   const [isMounted, setIsMounted] = useState(false);
 
   const lineRef = useRef<HTMLDivElement>(null);
+  const techTextRef = useRef<HTMLSpanElement>(null);
+  const prevRevealedTech = useRef<string | null>(null);
 
   const mouseX = useMotionValue(0);
 
@@ -47,6 +51,7 @@ export function InteractiveLanding() {
   );
 
   useEffect(() => {
+    gsap.registerPlugin(ScrambleTextPlugin);
     setIsMounted(true);
     if (typeof window !== 'undefined') {
       mouseX.set(window.innerWidth / 2);
@@ -54,7 +59,8 @@ export function InteractiveLanding() {
 
     const handleMouseMove = (e: MouseEvent) => {
       if (lineRef.current) {
-        const { left, top, width, height } = lineRef.current.getBoundingClientRect();
+        const { left, top, width, height } =
+          lineRef.current.getBoundingClientRect();
         const y = e.clientY - top;
 
         if (y > 0 && y < height) {
@@ -88,6 +94,27 @@ export function InteractiveLanding() {
       );
     };
   }, [mouseX]);
+
+  useLayoutEffect(() => {
+    const target = techTextRef.current;
+    if (!target) return;
+
+    if (revealedTech && revealedTech !== prevRevealedTech.current) {
+      gsap.to(target, {
+        duration: 0.7,
+        scrambleText: {
+          text: revealedTech,
+          chars: 'lowerCase',
+          speed: 0.3,
+        },
+      });
+    } else if (!revealedTech && prevRevealedTech.current) {
+      target.textContent = '';
+    }
+
+    prevRevealedTech.current = revealedTech;
+  }, [revealedTech]);
+
 
   if (!isMounted) {
     return null; // Or a loading spinner
@@ -158,7 +185,7 @@ export function InteractiveLanding() {
         }}
         transition={{ duration: 0.2 }}
       >
-        {revealedTech}
+        <span ref={techTextRef} />
       </motion.div>
     </div>
   );
