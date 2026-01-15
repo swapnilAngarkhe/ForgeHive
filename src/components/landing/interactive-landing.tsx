@@ -86,7 +86,7 @@ export function InteractiveLanding() {
       <LandingHeader />
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-left absolute top-0 left-4 md:left-8">
+        <div className="text-right absolute top-0 right-4 md:right-8">
           <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
             F
           </span>
