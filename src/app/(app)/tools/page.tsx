@@ -10,6 +10,93 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import type { Tool } from '@/lib/db-types';
+
+const defaultTools: Tool[] = [
+  {
+    id: 1,
+    name: 'ShadCN UI',
+    slug: 'shadcn-ui',
+    description:
+      'Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.',
+    url: 'https://ui.shadcn.com/',
+    category_id: 1,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'UI Libraries' },
+  },
+  {
+    id: 2,
+    name: 'Supabase',
+    slug: 'supabase',
+    description:
+      'The open source Firebase alternative. Create a backend in less than 2 minutes. Start your project with a Postgres database, Authentication, instant APIs, and so much more.',
+    url: 'https://supabase.io/',
+    category_id: 2,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'Backend Services' },
+  },
+  {
+    id: 3,
+    name: 'Next.js',
+    slug: 'next-js',
+    description:
+      'The React Framework for Production. Next.js gives you the best developer experience with all the features you need for production: hybrid static & server rendering, TypeScript support, smart bundling, route pre-fetching, and more. No config needed.',
+    url: 'https://nextjs.org/',
+    category_id: 3,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'Frameworks' },
+  },
+  {
+    id: 4,
+    name: 'Tailwind CSS',
+    slug: 'tailwind-css',
+    description:
+      'A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.',
+    url: 'https://tailwindcss.com/',
+    category_id: 1,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'CSS Frameworks' },
+  },
+  {
+    id: 5,
+    name: 'Lucide',
+    slug: 'lucide',
+    description:
+      'A community-run fork of the Feather icon set, with over 850 icons. It is a highly customizable and lightweight icon library.',
+    url: 'https://lucide.dev/',
+    category_id: 4,
+    created_by: 'system',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    categories: { category_name: 'Icons' },
+  },
+];
+
+function getToolImage(tool: Tool) {
+  const uiImage = PlaceHolderImages.find((img) => img.id === 'ui-tool-1');
+  const apiImage = PlaceHolderImages.find((img) => img.id === 'api-tool-1');
+
+  switch (tool.categories.category_name) {
+    case 'UI Libraries':
+    case 'CSS Frameworks':
+    case 'Icons':
+      return uiImage;
+    case 'Backend Services':
+      return apiImage;
+    default:
+      return uiImage;
+  }
+}
 
 export default async function ToolsPage({
   searchParams,
@@ -21,15 +108,18 @@ export default async function ToolsPage({
 }) {
   const supabase = createClient();
 
-  let query = supabase
-    .from('tools')
-    .select('*, categories(category_name)');
+  let query = supabase.from('tools').select('*, categories(category_name)');
 
   if (searchParams?.q) {
     query = query.ilike('name', `%${searchParams.q}%`);
   }
 
-  const { data: tools, error } = await query;
+  const { data: dbTools, error } = await query;
+  
+  const allTools = [...defaultTools, ...(dbTools || [])];
+
+  const uniqueTools = Array.from(new Map(allTools.map(tool => [tool.name, tool])).values());
+
 
   if (error) {
     console.error('Error fetching tools:', error);
@@ -38,29 +128,45 @@ export default async function ToolsPage({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {tools && tools.length > 0 ? (
-        tools.map((tool) => (
-          <Card key={tool.id}>
-            <CardHeader>
-              <CardTitle>{tool.name}</CardTitle>
-              <CardDescription className="line-clamp-2">
-                {tool.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {tool.categories && (
-                <Badge variant="secondary">{tool.categories.category_name}</Badge>
+      {uniqueTools && uniqueTools.length > 0 ? (
+        uniqueTools.map((tool) => {
+          const image = getToolImage(tool as Tool);
+          return (
+            <Card key={tool.id} className="flex flex-col">
+              {image && (
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={image.imageUrl}
+                    alt={tool.name}
+                    fill
+                    className="object-cover rounded-t-lg"
+                    data-ai-hint={image.imageHint}
+                  />
+                </div>
               )}
-            </CardContent>
-            <CardFooter>
-              <Button asChild>
-                <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                  Visit
-                </a>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))
+              <CardHeader>
+                <CardTitle>{tool.name}</CardTitle>
+                <CardDescription className="line-clamp-2 h-10">
+                  {tool.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                {tool.categories && (
+                  <Badge variant="secondary">
+                    {tool.categories.category_name}
+                  </Badge>
+                )}
+              </CardContent>
+              <CardFooter>
+                <Button asChild>
+                  <a href={tool.url} target="_blank" rel="noopener noreferrer">
+                    Visit
+                  </a>
+                </Button>
+              </CardFooter>
+            </Card>
+          );
+        })
       ) : (
         <p>No tools found.</p>
       )}
