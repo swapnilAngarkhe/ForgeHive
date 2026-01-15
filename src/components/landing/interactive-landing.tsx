@@ -86,7 +86,7 @@ export function InteractiveLanding() {
       <LandingHeader />
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-left absolute -top-16 left-4 md:left-8 pb-[50px]">
+        <div className="text-left absolute -top-28 left-4 md:left-8 pb-[50px]">
           <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
             F
           </span>
@@ -104,7 +104,7 @@ export function InteractiveLanding() {
           <ForgeHiveLogo className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary" />
         </motion.div>
 
-        <div className="text-left">
+        <div className="text-left absolute -top-28 right-4 md:right-8 pb-[50px]">
           <span className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-none text-secondary">
             H
           </span>
