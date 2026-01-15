@@ -30,6 +30,7 @@ export function InteractiveLanding() {
   const [isMounted, setIsMounted] = useState(false);
 
   const lineRef = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
   const techTextRef = useRef<HTMLSpanElement>(null);
   const prevRevealedTech = useRef<string | null>(null);
 
@@ -37,8 +38,6 @@ export function InteractiveLanding() {
 
   const springConfig = { damping: 20, stiffness: 200 };
   const smoothedMouseX = useSpring(mouseX, springConfig);
-
-  const lineAttractionY = useSpring(0, { damping: 15, stiffness: 150 });
 
   const bend = useTransform(
     smoothedMouseX,
@@ -52,8 +51,6 @@ export function InteractiveLanding() {
     }
   );
 
-  const lineY = useTransform(lineAttractionY, (v) => `calc(-50% + ${v}px)`);
-
   useEffect(() => {
     gsap.registerPlugin(ScrambleTextPlugin);
     setIsMounted(true);
@@ -62,33 +59,66 @@ export function InteractiveLanding() {
     }
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (lineRef.current) {
+      mouseX.set(e.clientX);
+      
+      if (lineRef.current && pathRef.current) {
         const { left, top, width, height } =
           lineRef.current.getBoundingClientRect();
-        const y = e.clientY - top;
+        const yInRect = e.clientY - top;
+        const xInRect = e.clientX - left;
+        const centerY = height / 2;
 
-        if (y > 0 && y < height) {
-          const xPos = e.clientX - left;
+        if (yInRect > 0 && yInRect < height) {
           const segmentWidth = width / tech.length;
-          const index = Math.floor(xPos / segmentWidth);
+          const index = Math.floor(xInRect / segmentWidth);
           setRevealedTech(tech[index] || null);
           setCursorPos({ x: e.clientX, y: e.clientY });
 
-          const distance = e.clientY - (top + height / 2);
-          lineAttractionY.set(distance * 0.1);
+          // Line bending logic
+          const distFromCenter = yInRect - centerY;
+          const spread = 150; // How wide the curve is
+
+          let d = `M 0 ${centerY}`;
+          const segments = 50;
+          for (let i = 0; i <= segments; i++) {
+            const px = (width / segments) * i;
+            // Gaussian falloff
+            const gauss = Math.exp(-((px - xInRect) ** 2) / (2 * spread ** 2));
+            const displacement = distFromCenter * gauss;
+            const py = centerY + displacement;
+            d += ` L ${px} ${py}`;
+          }
+
+          gsap.to(pathRef.current, {
+            attr: { d: d },
+            duration: 0.3,
+            ease: 'power2.out',
+          });
         } else {
           setRevealedTech(null);
-          lineAttractionY.set(0);
+          // Relax line
+          gsap.to(pathRef.current, {
+            attr: { d: `M 0,${centerY} L ${width},${centerY}` },
+            duration: 0.5,
+            ease: 'elastic.out(1, 0.75)',
+          });
         }
       }
-      mouseX.set(e.clientX);
     };
 
     const handleMouseLeave = () => {
       setRevealedTech(null);
-      lineAttractionY.set(0);
       if (typeof window !== 'undefined') {
         mouseX.set(window.innerWidth / 2);
+      }
+      if (lineRef.current && pathRef.current) {
+        const { width, height } = lineRef.current.getBoundingClientRect();
+        const centerY = height / 2;
+        gsap.to(pathRef.current, {
+          attr: { d: `M 0,${centerY} L ${width},${centerY}` },
+          duration: 0.5,
+          ease: 'elastic.out(1, 0.75)',
+        });
       }
     };
 
@@ -102,7 +132,24 @@ export function InteractiveLanding() {
         handleMouseLeave
       );
     };
-  }, [mouseX, lineAttractionY]);
+  }, [mouseX]);
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+        if (lineRef.current && pathRef.current) {
+            const { width, height } = lineRef.current.getBoundingClientRect();
+            const centerY = height / 2;
+            const d = `M 0,${centerY} L ${width},${centerY}`;
+            gsap.set(pathRef.current, { attr: { d } });
+        }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call once to set initial path
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useLayoutEffect(() => {
     const target = techTextRef.current;
@@ -162,22 +209,25 @@ export function InteractiveLanding() {
         </div>
       </div>
 
-      <motion.div
+      <div
         ref={lineRef}
         className="absolute w-full h-20 -translate-y-1/2 cursor-none top-1/2"
         style={{ perspective: '1000px' }}
       >
-        <motion.div
-          className="w-full h-px bg-border"
-          style={{
-            rotateX: bend,
-            y: lineY,
-            position: 'absolute',
-            top: '50%',
-          }}
+        <motion.svg
+          width="100%"
+          height="100%"
+          style={{ rotateX: bend }}
           transition={springConfig}
-        />
-      </motion.div>
+        >
+          <path
+            ref={pathRef}
+            stroke="hsl(var(--border))"
+            strokeWidth="1"
+            fill="none"
+          />
+        </motion.svg>
+      </div>
 
       <motion.div
         className="fixed top-0 left-0 text-sm pointer-events-none text-accent"
