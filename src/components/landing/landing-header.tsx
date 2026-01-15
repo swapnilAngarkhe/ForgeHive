@@ -32,13 +32,6 @@ export function LandingHeader() {
               className="text-muted-foreground hover:text-foreground"
               prefetch={false}
             >
-              Categories
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-              prefetch={false}
-            >
               About
             </Link>
              <Link
@@ -61,9 +54,6 @@ export function LandingHeader() {
        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link href="/tools" className="hover:text-accent" prefetch={false}>
             Browse Tools
-          </Link>
-          <Link href="#" className="hover:text-accent" prefetch={false}>
-            Categories
           </Link>
           <Link href="#" className="hover:text-accent" prefetch={false}>
             About

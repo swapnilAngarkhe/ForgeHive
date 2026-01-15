@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Tool } from '@/lib/db-types';
+import { Input } from '@/components/ui/input';
 
 const defaultTools: Tool[] = [
   {
@@ -187,30 +188,55 @@ export default async function ToolsPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center flex-wrap gap-2">
-        <span className="text-sm font-semibold">Categories:</span>
-        {uniqueCategories.map((category) => (
-          <Link
-            key={category}
-            href={
-              category === 'All'
-                ? '/tools'
-                : `/tools?category=${encodeURIComponent(category)}`
+      <div className="flex flex-col gap-4">
+        <form className="flex w-full max-w-lg items-center space-x-2">
+          <Input
+            type="search"
+            name="q"
+            placeholder="Search tools..."
+            className="flex-1"
+            defaultValue={searchParams?.q || ''}
+          />
+          {searchParams?.category && searchParams.category !== 'All' && (
+            <input
+              type="hidden"
+              name="category"
+              value={searchParams.category}
+            />
+          )}
+          <Button type="submit">Search</Button>
+        </form>
+
+        <div className="flex items-center flex-wrap gap-2">
+          <span className="text-sm font-semibold">Categories:</span>
+          {uniqueCategories.map((category) => {
+            const params = new URLSearchParams();
+            if (searchParams?.q) {
+              params.set('q', searchParams.q);
             }
-          >
-            <Badge
-              variant={
-                selectedCategory === category ||
-                (!selectedCategory && category === 'All')
-                  ? 'default'
-                  : 'secondary'
-              }
-              className="cursor-pointer"
-            >
-              #{category}
-            </Badge>
-          </Link>
-        ))}
+            if (category !== 'All') {
+              params.set('category', category);
+            }
+            const queryString = params.toString();
+            const href = queryString ? `/tools?${queryString}` : '/tools';
+
+            return (
+              <Link key={category} href={href}>
+                <Badge
+                  variant={
+                    selectedCategory === category ||
+                    (!selectedCategory && category === 'All')
+                      ? 'default'
+                      : 'secondary'
+                  }
+                  className="cursor-pointer"
+                >
+                  #{category}
+                </Badge>
+              </Link>
+            );
+          })}
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTools && filteredTools.length > 0 ? (
@@ -258,7 +284,7 @@ export default async function ToolsPage({
           })
         ) : (
           <div className="col-span-full text-center py-10">
-            <p>No tools found for this category.</p>
+            <p>No tools found.</p>
           </div>
         )}
       </div>
