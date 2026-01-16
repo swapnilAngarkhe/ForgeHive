@@ -31,8 +31,8 @@ const Ticker = () => {
 export function LandingHeader() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6">
-      <div className="w-full max-w-2xl flex flex-col items-center gap-3 px-4">
-        <nav className="relative flex h-14 w-full items-center justify-between rounded-full bg-card p-2 px-4 shadow-lg border border-border">
+      <div className="w-full max-w-md flex flex-col items-center gap-3 px-4">
+        <nav className="relative flex h-12 w-full items-center justify-between rounded-full bg-card p-2 px-4 shadow-lg border border-border">
           {/* Left Section */}
           <div className="flex items-center">
             <Sheet>
