@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const TickerText = () => {
   const text = 'not backed by open labs';
-  const repeatedText = Array(15).fill(text).join(' ✦ ');
+  const repeatedText = Array(15).fill(text).join('   ✦   ');
 
   return (
     <p className="py-1 whitespace-nowrap text-sm font-medium">
