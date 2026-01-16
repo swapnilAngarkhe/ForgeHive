@@ -207,7 +207,7 @@ export function InteractiveLanding() {
 
       <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full h-full max-w-7xl mx-auto px-4 md:px-8">
         <div ref={fRef} className="absolute top-0 left-0 p-4 md:p-8">
-          <div className="text-[50vh] font-bold leading-none text-foreground">
+          <div className="text-[50vh] font-bold leading-none text-foreground font-display">
             F
           </div>
         </div>
@@ -225,7 +225,7 @@ export function InteractiveLanding() {
         </motion.div>
 
         <div ref={hRef} className="absolute bottom-0 right-0 p-4 md:p-8">
-          <div className="text-[50vh] font-bold leading-none text-foreground">
+          <div className="text-[50vh] font-bold leading-none text-foreground font-display">
             H
           </div>
         </div>
@@ -235,7 +235,6 @@ export function InteractiveLanding() {
         ref={lineRef}
         className="absolute w-full h-20 -translate-y-1/2 cursor-none top-1/2"
         style={{
-          perspective: '1000px',
           maskImage:
             'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
           WebkitMaskImage:
