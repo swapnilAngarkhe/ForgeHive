@@ -1,73 +1,104 @@
+'use client';
+
 import Link from 'next/link';
-import { Menu, Package2 } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
+const TickerText = () => {
+  const text = 'not backed by open labs';
+  const repeatedText = Array(15).fill(text).join(' • ');
+
+  return (
+    <p className="py-1 whitespace-nowrap text-sm font-medium">
+      {repeatedText}
+    </p>
+  );
+};
+
+const Ticker = () => {
+  return (
+    <div className="w-full bg-accent text-accent-foreground rounded-full overflow-hidden">
+      <div className="flex animate-marquee">
+        <TickerText />
+        <TickerText />
+      </div>
+    </div>
+  );
+};
+
 export function LandingHeader() {
   return (
-    <header className="absolute top-0 left-0 right-0 flex items-center justify-between p-4 md:p-6 z-50">
-      <Link href="/" className="flex items-center gap-2" prefetch={false}>
-        <Package2 className="h-6 w-6 text-primary" />
-        <span className="sr-only">ForgeHive</span>
-      </Link>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="right">
-          <nav className="grid gap-6 text-lg font-medium mt-8">
-            <Link
-              href="/tools"
-              className="text-muted-foreground hover:text-foreground"
-              prefetch={false}
-            >
-              Browse Tools
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6">
+      <div className="w-full max-w-3xl flex flex-col items-center gap-3 px-4">
+        <nav className="relative flex h-14 w-full items-center justify-between rounded-full bg-card p-2 px-4 shadow-lg border border-border">
+          {/* Left Section */}
+          <div className="flex items-center">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2 text-foreground">
+                  <Menu className="h-5 w-5" />
+                  <span className="text-sm font-medium">Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="bg-card">
+                <nav className="grid gap-6 text-lg font-medium mt-8">
+                   <Link
+                      href="/"
+                      className="flex items-center gap-2 text-lg font-semibold"
+                      prefetch={false}
+                    >
+                      <span className="font-bold text-foreground">FH</span>
+                      <span className="sr-only">ForgeHive</span>
+                    </Link>
+                  <Link
+                    href="/tools"
+                    className="text-muted-foreground hover:text-foreground"
+                    prefetch={false}
+                  >
+                    Browse Tools
+                  </Link>
+                  <Link
+                    href="#"
+                    className="text-muted-foreground hover:text-foreground"
+                    prefetch={false}
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="#"
+                    className="text-muted-foreground hover:text-foreground"
+                    prefetch={false}
+                  >
+                    Contact
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Center Section */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Link href="/" className="font-bold text-xl text-foreground" prefetch={false}>
+              FH
             </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-              prefetch={false}
-            >
-              About
-            </Link>
-             <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-              prefetch={false}
-            >
-              Contact
-            </Link>
-            <Link
-              href="/login"
-              className="text-foreground hover:text-foreground"
-              prefetch={false}
-            >
-              Login
-            </Link>
-          </nav>
-        </SheetContent>
-      </Sheet>
-       <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/tools" className="hover:text-accent" prefetch={false}>
-            Browse Tools
-          </Link>
-          <Link href="#" className="hover:text-accent" prefetch={false}>
-            About
-          </Link>
-          <Link href="#" className="hover:text-accent" prefetch={false}>
-            Contact
-          </Link>
-          <Button asChild variant="ghost" className="hover:bg-secondary">
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-             <Link href="/register">Sign Up</Link>
-          </Button>
-      </nav>
+          </div>
+
+          {/* Right Section */}
+          <div className="flex items-center gap-2">
+            <Button asChild variant="ghost">
+              <Link href="/login">Login</Link>
+            </Button>
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <Link href="/register">Join</Link>
+            </Button>
+          </div>
+        </nav>
+
+        {/* Ticker Bar */}
+        <Ticker />
+      </div>
     </header>
   );
 }
