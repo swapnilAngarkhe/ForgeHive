@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
+import { useState, useRef, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
 
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const TickerText = () => {
   const text = 'not backed by open labs';
@@ -29,74 +30,133 @@ const Ticker = () => {
 };
 
 export function LandingHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+  const menuItemsRef = useRef<HTMLDivElement>(null);
+
+  const tl = useRef<gsap.core.Timeline | null>(null);
+
+  useLayoutEffect(() => {
+    if (!menuContainerRef.current || !menuItemsRef.current) return;
+
+    const menuItems = gsap.utils.toArray(menuItemsRef.current.children);
+
+    gsap.set(menuItems, { opacity: 0, y: 15 });
+
+    tl.current = gsap
+      .timeline({ paused: true, reversed: true })
+      .to(menuContainerRef.current, {
+        height: '220px',
+        duration: 0.4,
+        ease: 'power2.out',
+      })
+      .to(
+        menuItems,
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.05,
+          duration: 0.3,
+          ease: 'power2.out',
+        },
+        '-=0.2'
+      );
+
+    return () => {
+      tl.current?.kill();
+    };
+  }, []);
+
+  const toggleMenu = () => {
+    // We use a function for setState to get the latest state and prevent race conditions
+    setIsMenuOpen((prev) => {
+      const nextState = !prev;
+      if (nextState) {
+        tl.current?.play();
+      } else {
+        tl.current?.reverse();
+      }
+      return nextState;
+    });
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6">
       <div className="w-full max-w-md flex flex-col items-center gap-3 px-4">
-        <nav className="relative flex h-12 w-full items-center justify-between rounded-full bg-card p-2 px-4 shadow-lg border border-border">
-          {/* Left Section */}
-          <div className="flex items-center">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 text-foreground">
-                  <Menu className="h-5 w-5" />
-                  <span className="text-sm font-medium">Menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="bg-card">
-                <nav className="grid gap-6 text-lg font-medium mt-8">
-                   <Link
-                      href="/"
-                      className="flex items-center gap-2 text-lg font-semibold"
-                      prefetch={false}
-                    >
-                      <span className="font-bold text-foreground">FH</span>
-                      <span className="sr-only">ForgeHive</span>
-                    </Link>
-                  <Link
-                    href="/tools"
-                    className="text-muted-foreground hover:text-foreground"
-                    prefetch={false}
-                  >
-                    Browse Tools
-                  </Link>
-                  <Link
-                    href="#"
-                    className="text-muted-foreground hover:text-foreground"
-                    prefetch={false}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="#"
-                    className="text-muted-foreground hover:text-foreground"
-                    prefetch={false}
-                  >
-                    Contact
-                  </Link>
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
+        <div
+          ref={menuContainerRef}
+          className="relative w-full h-12 bg-card rounded-full shadow-lg border border-border overflow-hidden"
+        >
+          <nav className="relative flex h-12 w-full items-center justify-between p-2 px-4">
+            {/* Left Section */}
+            <div className="flex items-center">
+              <Button
+                variant="ghost"
+                className="flex items-center gap-2 text-foreground"
+                onClick={toggleMenu}
+              >
+                <Menu className="h-5 w-5" />
+                <span className="text-sm font-medium">Menu</span>
+              </Button>
+            </div>
 
-          {/* Center Section */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Link href="/" className="font-bold text-xl text-foreground" prefetch={false}>
-              FH
+            {/* Center Section */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Link
+                href="/"
+                className="font-bold text-xl text-foreground"
+                prefetch={false}
+                onClick={isMenuOpen ? toggleMenu : undefined}
+              >
+                FH
+              </Link>
+            </div>
+
+            {/* Right Section */}
+            <div className="flex items-center gap-2">
+              <Button asChild variant="ghost">
+                <Link href="/login">Login</Link>
+              </Button>
+              <Button
+                asChild
+                className="bg-accent text-accent-foreground hover:bg-accent/90"
+              >
+                <Link href="/register">Join</Link>
+              </Button>
+            </div>
+          </nav>
+
+          <div
+            ref={menuItemsRef}
+            className="absolute top-16 w-full pt-4 flex flex-col items-center gap-6"
+          >
+            <Link
+              href="/tools"
+              className="text-muted-foreground hover:text-foreground text-lg font-medium"
+              prefetch={false}
+              onClick={toggleMenu}
+            >
+              Browse Tools
+            </Link>
+            <Link
+              href="#"
+              className="text-muted-foreground hover:text-foreground text-lg font-medium"
+              prefetch={false}
+              onClick={toggleMenu}
+            >
+              About
+            </Link>
+            <Link
+              href="#"
+              className="text-muted-foreground hover:text-foreground text-lg font-medium"
+              prefetch={false}
+              onClick={toggleMenu}
+            >
+              Contact Us
             </Link>
           </div>
+        </div>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-2">
-            <Button asChild variant="ghost">
-              <Link href="/login">Login</Link>
-            </Button>
-            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link href="/register">Join</Link>
-            </Button>
-          </div>
-        </nav>
-
-        {/* Ticker Bar */}
         <Ticker />
       </div>
     </header>
