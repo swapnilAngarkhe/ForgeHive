@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Tool } from '@/lib/db-types';
 import { ToolDetailModal } from '@/components/tools/tool-detail-modal';
+import { ToolLinkButtons } from '@/components/tools/tool-link-buttons';
 
 function getToolImage(tool: Tool) {
   const uiImage = PlaceHolderImages.find((img) => img.id === 'ui-tool-1');
@@ -175,19 +176,12 @@ export function ToolsClientPage({
                         </Badge>
                       )}
                     </CardContent>
-                    <CardFooter>
-                      {(tool.url || tool.github_url) && (
-                        <Button asChild>
-                          <a
-                            href={tool.url || tool.github_url!}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            Visit
-                          </a>
-                        </Button>
-                      )}
+                    <CardFooter className="flex flex-wrap gap-2">
+                      <ToolLinkButtons
+                        tool={tool}
+                        buttonSize="sm"
+                        onButtonClick={(e) => e.stopPropagation()}
+                      />
                     </CardFooter>
                   </Card>
                 </motion.div>

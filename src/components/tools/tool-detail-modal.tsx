@@ -2,11 +2,10 @@
 
 import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Github } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import type { Tool } from '@/lib/db-types';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -15,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ToolLinkButtons } from './tool-link-buttons';
 
 type ToolDetailModalProps = {
   tool: Tool | null;
@@ -93,28 +93,7 @@ export function ToolDetailModal({
                 )}
               </CardContent>
               <CardFooter className="flex gap-2">
-                {tool.url && (
-                  <Button asChild>
-                    <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                      Visit Website
-                    </a>
-                  </Button>
-                )}
-                {tool.github_url && (
-                  <Button
-                    asChild
-                    variant={tool.url ? 'secondary' : 'default'}
-                  >
-                    <a
-                      href={tool.github_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github />
-                      GitHub
-                    </a>
-                  </Button>
-                )}
+                <ToolLinkButtons tool={tool} />
               </CardFooter>
             </Card>
           </motion.div>
