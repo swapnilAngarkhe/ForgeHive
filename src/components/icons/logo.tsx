@@ -7,17 +7,27 @@ export function ForgeHiveLogo(props: SVGProps<SVGSVGElement>) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...props}
     >
-      <path d="M12 2l8 4.5v9l-8 4.5-8-4.5v-9L12 2z" />
-      <path d="M12 2v20" />
-      <path d="M4 6.5l8 4.5 8-4.5" />
-      <path d="M4 17.5l8-4.5 8 4.5" />
-      <path d="M12 11.5v-5" />
-      <path d="M12 22v-6.5" />
+      {/* The main 'U' shape / cauldron */}
+      <path d="M5 19v-4l2-2h10l2 2v4" />
+
+      {/* The upward arrows from the corners */}
+      <path d="M3 15 l2-2 2 2" />
+      <path d="M17 15 l2-2 2 2" />
+
+      {/* The 'magic'/'sparks' coming out */}
+      <path d="M9 12V8" />
+      <path d="M12 12V6" />
+      <path d="M15 12V8" />
+
+      {/* The sparkle star and dot */}
+      <path d="M18 3 l2 2" />
+      <path d="M20 3 l-2 2" />
+      <circle cx="17" cy="2.5" r="0.75" fill="currentColor" strokeWidth="0" />
     </svg>
   );
 }
