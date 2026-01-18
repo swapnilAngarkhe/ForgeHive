@@ -176,16 +176,18 @@ export function ToolsClientPage({
                       )}
                     </CardContent>
                     <CardFooter>
-                      <Button asChild>
-                        <a
-                          href={tool.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          Visit
-                        </a>
-                      </Button>
+                      {(tool.url || tool.github_url) && (
+                        <Button asChild>
+                          <a
+                            href={tool.url || tool.github_url!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Visit
+                          </a>
+                        </Button>
+                      )}
                     </CardFooter>
                   </Card>
                 </motion.div>

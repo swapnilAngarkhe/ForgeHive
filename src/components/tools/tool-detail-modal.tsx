@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Github } from 'lucide-react';
 import Image from 'next/image';
 import type { Tool } from '@/lib/db-types';
 import { Badge } from '@/components/ui/badge';
@@ -92,16 +92,29 @@ export function ToolDetailModal({
                   </Badge>
                 )}
               </CardContent>
-              <CardFooter>
-                <Button asChild>
-                  <a
-                    href={tool.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+              <CardFooter className="flex gap-2">
+                {tool.url && (
+                  <Button asChild>
+                    <a href={tool.url} target="_blank" rel="noopener noreferrer">
+                      Visit Website
+                    </a>
+                  </Button>
+                )}
+                {tool.github_url && (
+                  <Button
+                    asChild
+                    variant={tool.url ? 'secondary' : 'default'}
                   >
-                    Visit
-                  </a>
-                </Button>
+                    <a
+                      href={tool.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github />
+                      GitHub
+                    </a>
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           </motion.div>

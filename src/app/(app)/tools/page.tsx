@@ -12,6 +12,7 @@ const defaultTools: Tool[] = [
     description:
       'Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.',
     url: 'https://ui.shadcn.com/',
+    github_url: 'https://github.com/shadcn-ui/ui',
     category_id: 1,
     created_by: 'system',
     created_at: new Date().toISOString(),
@@ -25,6 +26,7 @@ const defaultTools: Tool[] = [
     description:
       'The open source Firebase alternative. Create a backend in less than 2 minutes. Start your project with a Postgres database, Authentication, instant APIs, and so much more.',
     url: 'https://supabase.io/',
+    github_url: 'https://github.com/supabase/supabase',
     category_id: 2,
     created_by: 'system',
     created_at: new Date().toISOString(),
@@ -38,6 +40,7 @@ const defaultTools: Tool[] = [
     description:
       'The React Framework for Production. Next.js gives you the best developer experience with all the features you need for production: hybrid static & server rendering, TypeScript support, smart bundling, route pre-fetching, and more. No config needed.',
     url: 'https://nextjs.org/',
+    github_url: 'https://github.com/vercel/next.js',
     category_id: 3,
     created_by: 'system',
     created_at: new Date().toISOString(),
@@ -51,6 +54,7 @@ const defaultTools: Tool[] = [
     description:
       'A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.',
     url: 'https://tailwindcss.com/',
+    github_url: 'https://github.com/tailwindlabs/tailwindcss',
     category_id: 1,
     created_by: 'system',
     created_at: new Date().toISOString(),
@@ -64,6 +68,7 @@ const defaultTools: Tool[] = [
     description:
       'A community-run fork of the Feather icon set, with over 850 icons. It is a highly customizable and lightweight icon library.',
     url: 'https://lucide.dev/',
+    github_url: 'https://github.com/lucide-icons/lucide',
     category_id: 4,
     created_by: 'system',
     created_at: new Date().toISOString(),
@@ -90,6 +95,7 @@ const defaultTools: Tool[] = [
     description:
       'A modern JavaScript utility library delivering modularity, performance & extras.',
     url: 'https://lodash.com/',
+    github_url: 'https://github.com/lodash/lodash',
     category_id: 6,
     created_by: 'system',
     created_at: new Date().toISOString(),
@@ -102,7 +108,7 @@ const defaultTools: Tool[] = [
     slug: 'zx',
     description:
       'A tool for writing better scripts. It provides useful wrappers around child_process, escapes arguments and gives sensible defaults.',
-    url: 'https://github.com/google/zx',
+    github_url: 'https://github.com/google/zx',
     category_id: 7,
     created_by: 'system',
     created_at: new Date().toISOString(),

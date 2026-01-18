@@ -15,9 +15,10 @@ export type Category = {
 export type Tool = {
   id: number;
   name: string;
-  slug: string;
+  slug?: string;
   description: string;
-  url: string;
+  url?: string;
+  github_url?: string;
   category_id: number;
   created_by: string;
   created_at: string;
