@@ -9,7 +9,6 @@ import {
 import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
-import { ForgeHiveLogo } from '../icons/logo';
 import { LandingHeader } from './landing-header';
 
 const tech = [
@@ -218,7 +217,9 @@ export function InteractiveLanding() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <ForgeHiveLogo className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary" />
+          <div className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary flex items-center justify-center text-4xl font-bold tracking-widest font-display">
+            LOGO
+          </div>
           <p className="absolute -bottom-8 text-muted-foreground lowercase text-sm">
             [ dip open source ]
           </p>
