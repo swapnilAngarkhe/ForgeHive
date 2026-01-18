@@ -217,7 +217,7 @@ export function InteractiveLanding() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 text-primary flex items-center justify-center">
+          <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 text-primary flex items-center justify-center">
             <svg width="364" height="364" viewBox="0 0 364 364" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
               <path d="M42.6941 182L78.3054 120.294H149.566L185.185 182L149.558 243.706H78.2978L42.6941 182ZM178.815 260.586L214.419 198.881H285.679L321.306 260.586L285.679 322.292H214.419L178.815 260.586ZM178.815 103.414L214.411 41.7084H285.672L321.298 103.414L285.672 165.12H214.411L178.815 103.414Z" stroke="#8295C1" strokeWidth="19" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M42.6941 182L78.3054 120.294H149.566L185.185 182L149.558 243.706H78.2978L42.6941 182ZM178.815 260.586L214.419 198.881H285.679L321.306 260.586L285.679 322.292H214.419L178.815 260.586ZM178.815 103.414L214.411 41.7084H285.672L321.298 103.414L285.672 165.12H214.411L178.815 103.414Z" stroke="#8295C1" strokeWidth="19" strokeLinecap="round" strokeLinejoin="round"/>
@@ -281,7 +281,7 @@ export function InteractiveLanding() {
       </div>
 
       <motion.div
-        className="fixed top-0 left-0 text-lg pointer-events-none text-accent"
+        className="fixed top-0 left-0 text-xl pointer-events-none text-accent"
         style={{
           x: cursorPos.x,
           y: cursorPos.y,
