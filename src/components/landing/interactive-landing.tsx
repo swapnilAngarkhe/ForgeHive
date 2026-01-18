@@ -204,7 +204,7 @@ export function InteractiveLanding() {
     <div className="relative flex flex-col items-center justify-center w-full min-h-screen overflow-hidden bg-background font-headline">
       <LandingHeader />
 
-      <div className="relative grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full h-full max-w-7xl mx-auto px-4 md:px-8">
+      <div className="relative z-10 grid items-center justify-center grid-cols-1 md:grid-cols-[1fr_auto_1fr] w-full h-full max-w-7xl mx-auto px-4 md:px-8">
         <div ref={fRef} className="absolute top-0 left-0 p-4 md:p-8 translate-y-9">
           <div className="text-[60vh] font-semibold leading-none text-foreground font-display">
             F
