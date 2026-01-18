@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,17 +45,58 @@ type ToolsClientPageProps = {
   searchParams?: {
     q?: string;
     category?: string;
+    page?: string;
   };
+  currentPage: number;
+  totalPages: number;
 };
+
+function PaginationControls({
+  currentPage,
+  totalPages,
+}: {
+  currentPage: number;
+  totalPages: number;
+}) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
+
+  return (
+    <div className="flex items-center justify-center pt-8 gap-4">
+      <Button asChild variant="outline" disabled={currentPage <= 1}>
+        <Link href={createPageURL(currentPage - 1)}>← Previous</Link>
+      </Button>
+      <span className="text-sm text-muted-foreground">
+        Page {currentPage} of {totalPages}
+      </span>
+      <Button asChild variant="outline" disabled={currentPage >= totalPages}>
+        <Link href={createPageURL(currentPage + 1)}>Next →</Link>
+      </Button>
+    </div>
+  );
+}
 
 export function ToolsClientPage({
   tools,
   categories,
   searchParams,
+  currentPage,
+  totalPages,
 }: ToolsClientPageProps) {
   const [selectedToolIndex, setSelectedToolIndex] = React.useState<
     number | null
   >(null);
+  const routerSearchParams = useSearchParams();
+
+  React.useEffect(() => {
+    setSelectedToolIndex(null);
+  }, [routerSearchParams]);
 
   const handleNext = () => {
     if (selectedToolIndex !== null && selectedToolIndex < tools.length - 1) {
@@ -95,13 +137,13 @@ export function ToolsClientPage({
             </h2>
             <div className="flex flex-col gap-2">
               {categories.map((category) => {
-                const params = new URLSearchParams();
-                if (searchParams?.q) {
-                  params.set('q', searchParams.q);
-                }
-                if (category !== 'All') {
+                const params = new URLSearchParams(searchParams);
+                if (category === 'All') {
+                  params.delete('category');
+                } else {
                   params.set('category', category);
                 }
+                params.set('page', '1');
                 const queryString = params.toString();
                 const href = queryString ? `/tools?${queryString}` : '/tools';
 
@@ -140,6 +182,7 @@ export function ToolsClientPage({
                   value={searchParams.category}
                 />
               )}
+              <input type="hidden" name="page" value="1" />
               <Button type="submit">Search</Button>
             </form>
 
@@ -147,13 +190,13 @@ export function ToolsClientPage({
             <div className="flex items-center flex-wrap gap-2 md:hidden">
               <span className="text-sm font-semibold">Categories:</span>
               {categories.map((category) => {
-                const params = new URLSearchParams();
-                if (searchParams?.q) {
-                  params.set('q', searchParams.q);
-                }
-                if (category !== 'All') {
+                const params = new URLSearchParams(searchParams);
+                if (category === 'All') {
+                  params.delete('category');
+                } else {
                   params.set('category', category);
                 }
+                params.set('page', '1');
                 const queryString = params.toString();
                 const href = queryString ? `/tools?${queryString}` : '/tools';
 
@@ -225,6 +268,12 @@ export function ToolsClientPage({
                 </div>
               )}
             </div>
+            {totalPages > 1 && (
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
+            )}
           </div>
         </div>
       </div>

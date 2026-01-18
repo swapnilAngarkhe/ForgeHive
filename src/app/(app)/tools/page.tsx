@@ -123,6 +123,7 @@ export default async function ToolsPage({
   searchParams?: {
     q?: string;
     category?: string;
+    page?: string;
   };
 }) {
   const supabase = createClient();
@@ -148,7 +149,7 @@ export default async function ToolsPage({
 
   const selectedCategory = searchParams?.category;
 
-  const filteredTools =
+  const categorizedTools =
     selectedCategory && selectedCategory !== 'All'
       ? uniqueTools.filter(
           (tool) => tool.categories.category_name === selectedCategory
@@ -159,11 +160,23 @@ export default async function ToolsPage({
     console.error('Error fetching tools:', error);
   }
 
+  // Pagination Logic
+  const currentPage = Number(searchParams?.page || '1');
+  const pageSize = 5;
+  const totalTools = categorizedTools.length;
+  const totalPages = Math.ceil(totalTools / pageSize);
+  const paginatedTools = categorizedTools.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   return (
     <ToolsClientPage
-      tools={filteredTools}
+      tools={paginatedTools}
       categories={uniqueCategories}
       searchParams={searchParams}
+      currentPage={currentPage}
+      totalPages={totalPages}
     />
   );
 }
