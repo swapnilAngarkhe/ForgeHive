@@ -319,7 +319,7 @@ export function InteractiveLanding() {
       </div>
 
       <motion.div
-        className="fixed top-0 left-0 text-sm pointer-events-none text-accent"
+        className="fixed top-0 left-0 text-base pointer-events-none text-accent"
         style={{
           x: cursorPos.x,
           y: cursorPos.y,
