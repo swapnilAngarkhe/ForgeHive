@@ -1,5 +1,6 @@
 
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import type { Tool } from '@/lib/db-types';
 import { ToolsClientPage } from './tools-client-page';
@@ -165,6 +166,14 @@ export default async function ToolsPage({
   const pageSize = 5;
   const totalTools = categorizedTools.length;
   const totalPages = Math.ceil(totalTools / pageSize);
+
+  // Redirect if page number is out of bounds
+  if (totalTools > 0 && currentPage > totalPages) {
+    const newParams = new URLSearchParams(searchParams as any);
+    newParams.set('page', totalPages.toString());
+    return redirect(`/tools?${newParams.toString()}`);
+  }
+
   const paginatedTools = categorizedTools.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
