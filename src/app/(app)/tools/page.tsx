@@ -162,17 +162,16 @@ export default async function ToolsPage({
   }
 
   // Pagination Logic
-  const currentPage = Number(searchParams?.page || '1');
   const pageSize = 5;
   const totalTools = categorizedTools.length;
   const totalPages = Math.ceil(totalTools / pageSize);
 
-  // Redirect if page number is out of bounds
-  if (totalTools > 0 && currentPage > totalPages) {
-    const newParams = new URLSearchParams(searchParams as any);
-    newParams.set('page', totalPages.toString());
-    return redirect(`/tools?${newParams.toString()}`);
-  }
+  const rawPage = Number(searchParams?.page || '1');
+
+  const currentPage = Math.min(
+    Math.max(rawPage, 1),
+    totalPages || 1
+  );
 
   const paginatedTools = categorizedTools.slice(
     (currentPage - 1) * pageSize,
