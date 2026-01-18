@@ -1,20 +1,8 @@
 
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Tool } from '@/lib/db-types';
-import { Input } from '@/components/ui/input';
+import { ToolsClientPage } from './tools-client-page';
 
 const defaultTools: Tool[] = [
   {
@@ -123,28 +111,6 @@ const defaultTools: Tool[] = [
   },
 ];
 
-function getToolImage(tool: Tool) {
-  const uiImage = PlaceHolderImages.find((img) => img.id === 'ui-tool-1');
-  const apiImage = PlaceHolderImages.find((img) => img.id === 'api-tool-1');
-  const prodImage = PlaceHolderImages.find((img) => img.id === 'productivity-1');
-
-  switch (tool.categories.category_name) {
-    case 'UI':
-    case 'CSS':
-    case 'Icons':
-    case 'Frameworks':
-      return uiImage;
-    case 'Backend Services':
-    case 'Javascript':
-    case 'Scripting':
-      return apiImage;
-    case 'Productivity':
-      return prodImage;
-    default:
-      return uiImage;
-  }
-}
-
 export default async function ToolsPage({
   searchParams,
 }: {
@@ -188,107 +154,10 @@ export default async function ToolsPage({
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-4">
-        <form className="flex w-full max-w-lg items-center space-x-2">
-          <Input
-            type="search"
-            name="q"
-            placeholder="Search tools..."
-            className="flex-1"
-            defaultValue={searchParams?.q || ''}
-          />
-          {searchParams?.category && searchParams.category !== 'All' && (
-            <input
-              type="hidden"
-              name="category"
-              value={searchParams.category}
-            />
-          )}
-          <Button type="submit">Search</Button>
-        </form>
-
-        <div className="flex items-center flex-wrap gap-2">
-          <span className="text-sm font-semibold">Categories:</span>
-          {uniqueCategories.map((category) => {
-            const params = new URLSearchParams();
-            if (searchParams?.q) {
-              params.set('q', searchParams.q);
-            }
-            if (category !== 'All') {
-              params.set('category', category);
-            }
-            const queryString = params.toString();
-            const href = queryString ? `/tools?${queryString}` : '/tools';
-
-            return (
-              <Link key={category} href={href}>
-                <Badge
-                  variant={
-                    selectedCategory === category ||
-                    (!selectedCategory && category === 'All')
-                      ? 'default'
-                      : 'secondary'
-                  }
-                  className="cursor-pointer"
-                >
-                  #{category}
-                </Badge>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTools && filteredTools.length > 0 ? (
-          filteredTools.map((tool) => {
-            const image = getToolImage(tool as Tool);
-            return (
-              <Card key={tool.id} className="flex flex-col">
-                {image && (
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={image.imageUrl}
-                      alt={tool.name}
-                      fill
-                      className="object-cover rounded-t-lg"
-                      data-ai-hint={image.imageHint}
-                    />
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle>{tool.name}</CardTitle>
-                  <CardDescription className="line-clamp-2 h-10">
-                    {tool.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  {tool.categories && (
-                    <Badge variant="secondary">
-                      #{tool.categories.category_name}
-                    </Badge>
-                  )}
-                </CardContent>
-                <CardFooter>
-                  <Button asChild>
-                    <a
-                      href={tool.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visit
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })
-        ) : (
-          <div className="col-span-full text-center py-10">
-            <p>No tools found.</p>
-          </div>
-        )}
-      </div>
-    </div>
+    <ToolsClientPage
+      tools={filteredTools}
+      categories={uniqueCategories}
+      searchParams={searchParams}
+    />
   );
 }
