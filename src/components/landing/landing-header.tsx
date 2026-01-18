@@ -20,7 +20,7 @@ const TickerText = () => {
 
 const Ticker = () => {
   return (
-    <div className="w-full bg-accent text-accent-foreground rounded-full overflow-hidden">
+    <div className="w-full bg-accent text-accent-foreground overflow-hidden">
       <div className="flex animate-marquee">
         <TickerText />
         <TickerText />
@@ -85,7 +85,7 @@ export function LandingHeader() {
       <div className="w-full max-w-md flex flex-col items-center gap-3 px-4">
         <div
           ref={menuContainerRef}
-          className="relative w-full h-12 bg-card rounded-full shadow-lg border border-border overflow-hidden"
+          className="relative w-full h-12 bg-card shadow-lg border border-border overflow-hidden"
         >
           <nav className="relative flex h-12 w-full items-center justify-between p-2 px-4">
             {/* Left Section */}
