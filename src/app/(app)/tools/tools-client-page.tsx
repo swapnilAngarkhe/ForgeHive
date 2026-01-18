@@ -69,15 +69,19 @@ function PaginationControls({
 
   return (
     <div className="flex items-center justify-center pt-8 gap-4">
-      <Button asChild variant="outline" disabled={currentPage <= 1}>
-        <Link href={createPageURL(currentPage - 1)}>← Previous</Link>
-      </Button>
+      {currentPage > 1 && (
+        <Button asChild variant="outline">
+          <Link href={createPageURL(currentPage - 1)}>← Previous</Link>
+        </Button>
+      )}
       <span className="text-sm text-muted-foreground">
         Page {currentPage} of {totalPages}
       </span>
-      <Button asChild variant="outline" disabled={currentPage >= totalPages}>
-        <Link href={createPageURL(currentPage + 1)}>Next →</Link>
-      </Button>
+      {currentPage < totalPages && (
+        <Button asChild variant="outline">
+          <Link href={createPageURL(currentPage + 1)}>Next →</Link>
+        </Button>
+      )}
     </div>
   );
 }
