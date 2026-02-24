@@ -502,7 +502,7 @@ const SidebarMenuItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li">
 >(({ className, ...props }, ref) => (
-  <li
+  li
     ref={ref}
     data-sidebar="menu-item"
     className={cn("group/menu-item relative", className)}
@@ -650,10 +650,13 @@ const SidebarMenuSkeleton = React.forwardRef<
     showIcon?: boolean
   }
 >(({ className, showIcon = false, ...props }, ref) => {
-  // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`
-  }, [])
+  // Use local state and useEffect to set the width after hydration
+  // to avoid Math.random() mismatches between server and client.
+  const [width, setWidth] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setWidth(`${Math.floor(Math.random() * 40) + 50}%`);
+  }, []);
 
   return (
     <div
@@ -673,7 +676,7 @@ const SidebarMenuSkeleton = React.forwardRef<
         data-sidebar="menu-skeleton-text"
         style={
           {
-            "--skeleton-width": width,
+            "--skeleton-width": width || "70%", // Initial fallback
           } as React.CSSProperties
         }
       />
