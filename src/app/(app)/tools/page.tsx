@@ -4,16 +4,15 @@ import { createClient } from '@/lib/supabase/server';
 import type { Tool } from '@/lib/db-types';
 import { ToolsClientPage } from './tools-client-page';
 
-export default async function ToolsPage({
-  searchParams,
-}: {
-  searchParams?: {
+export default async function ToolsPage(props: {
+  searchParams?: Promise<{
     q?: string;
     category?: string;
     page?: string;
-  };
+  }>;
 }) {
-  const supabase = createClient();
+  const searchParams = await props.searchParams;
+  const supabase = await createClient();
 
   let query = supabase.from('tools').select('*, categories(category_name)');
 
