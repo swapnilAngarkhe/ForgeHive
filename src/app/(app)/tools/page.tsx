@@ -22,9 +22,14 @@ export default async function ToolsPage(props: {
 
   const { data: dbTools, error } = await query;
 
-  if (error) {
-    console.error('Error fetching tools:', error);
-  }
+  // if (error) {
+  //   console.error('Error fetching tools:', error);
+  // }
+
+  console.log("----- SUPABASE DEBUG -----");
+  console.log("Data:", dbTools);
+  console.log("Error:", JSON.stringify(error, null, 2));
+  console.log("--------------------------");
 
   const uniqueTools = dbTools || [];
 

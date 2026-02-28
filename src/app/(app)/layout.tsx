@@ -6,10 +6,10 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = await createClient();
+
+  const { data } = await supabase.auth.getUser();
+  const user = data?.user ?? null;
 
   return (
     <div className="flex min-h-screen w-full flex-col">
