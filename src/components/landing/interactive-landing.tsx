@@ -252,7 +252,7 @@ export function InteractiveLanding() {
           </div>
           <Link
             href="/tools"
-            className="absolute -bottom-8 text-muted-foreground hover:text-foreground transition-colors lowercase text-sm"
+            className="absolute -bottom-8 text-muted-foreground hover:text-accent transition-colors lowercase text-sm"
           >
             [ dip open source ]
           </Link>
