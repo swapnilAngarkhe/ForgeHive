@@ -98,7 +98,6 @@ export function ToolsClientPage({
     <>
       <ToolDetailModal
         tool={selectedTool}
-        image={undefined}
         onClose={() => setSelectedToolIndex(null)}
         onNext={handleNext}
         onPrevious={handlePrevious}

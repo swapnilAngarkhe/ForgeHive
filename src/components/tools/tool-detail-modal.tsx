@@ -18,7 +18,6 @@ import { ToolLinkButtons } from './tool-link-buttons';
 
 type ToolDetailModalProps = {
   tool: Tool | null;
-  image: { imageUrl: string; imageHint: string } | undefined;
   onClose: () => void;
   onNext: () => void;
   onPrevious: () => void;
@@ -28,7 +27,6 @@ type ToolDetailModalProps = {
 
 export function ToolDetailModal({
   tool,
-  image,
   onClose,
   onNext,
   onPrevious,
@@ -65,34 +63,35 @@ export function ToolDetailModal({
           <motion.div
             layoutId={`card-${tool.id}`}
             className="w-full max-w-lg mx-4"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the card
+            onClick={(e) => e.stopPropagation()}
           >
-            <Card className="flex flex-col h-[70vh] max-h-[600px]">
-              {image && (
-                <div className="relative h-48 w-full flex-shrink-0">
-                  <Image
-                    src={image.imageUrl}
-                    alt={tool.name}
-                    fill
-                    className="object-cover rounded-t-lg"
-                    data-ai-hint={image.imageHint}
-                  />
+            <Card className="flex flex-col h-[70vh] max-h-[600px] overflow-hidden">
+              <CardHeader className="text-center pb-2">
+                {tool?.logo_url && (
+                  <div className="relative h-24 w-24 mx-auto mb-4 bg-muted/20 rounded-md p-4">
+                    <Image
+                      src={tool.logo_url}
+                      alt={tool.name}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <CardTitle className="text-2xl font-bold">{tool.name}</CardTitle>
+                <div className="flex justify-center mt-2">
+                  {tool.categories && (
+                    <Badge variant="secondary">
+                      #{tool.categories.category_name}
+                    </Badge>
+                  )}
                 </div>
-              )}
-              <CardHeader>
-                <CardTitle>{tool.name}</CardTitle>
-                <CardDescription className="line-clamp-none max-h-48 overflow-y-auto">
+              </CardHeader>
+              <CardContent className="flex-grow overflow-y-auto px-6 py-4">
+                <CardDescription className="text-base leading-relaxed text-foreground/90">
                   {tool.description}
                 </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                {tool.categories && (
-                  <Badge variant="secondary">
-                    #{tool.categories.category_name}
-                  </Badge>
-                )}
               </CardContent>
-              <CardFooter className="flex gap-2">
+              <CardFooter className="flex justify-center gap-3 p-6 border-t">
                 <ToolLinkButtons tool={tool} />
               </CardFooter>
             </Card>
@@ -103,7 +102,7 @@ export function ToolDetailModal({
             animate={{ opacity: 1, scale: 1, transition: { delay: 0.3 } }}
             exit={{ opacity: 0, scale: 0.5 }}
             onClick={onClose}
-            className="absolute top-4 right-4 h-10 w-10 flex items-center justify-center bg-card rounded-full border"
+            className="absolute top-4 right-4 h-10 w-10 flex items-center justify-center bg-card rounded-full border shadow-sm hover:bg-accent transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -118,7 +117,7 @@ export function ToolDetailModal({
                 e.stopPropagation();
                 onPrevious();
               }}
-              className="absolute left-4 md:left-10 h-12 w-12 flex items-center justify-center bg-card rounded-full border"
+              className="absolute left-4 md:left-10 h-12 w-12 flex items-center justify-center bg-card rounded-full border shadow-sm hover:bg-accent transition-colors"
               aria-label="Previous tool"
             >
               <ChevronLeft className="h-6 w-6" />
@@ -134,7 +133,7 @@ export function ToolDetailModal({
                 e.stopPropagation();
                 onNext();
               }}
-              className="absolute right-4 md:right-10 h-12 w-12 flex items-center justify-center bg-card rounded-full border"
+              className="absolute right-4 md:right-10 h-12 w-12 flex items-center justify-center bg-card rounded-full border shadow-sm hover:bg-accent transition-colors"
               aria-label="Next tool"
             >
               <ChevronRight className="h-6 w-6" />
