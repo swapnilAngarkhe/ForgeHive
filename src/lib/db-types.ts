@@ -19,6 +19,7 @@ export type Tool = {
   description: string;
   url?: string;
   github_url?: string;
+  logo_url?: string;
   category_id: number;
   created_by: string;
   created_at: string;

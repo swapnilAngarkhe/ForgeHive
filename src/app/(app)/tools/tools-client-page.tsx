@@ -10,34 +10,9 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Tool } from '@/lib/db-types';
 import { ToolDetailModal } from '@/components/tools/tool-detail-modal';
 import { ToolLinkButtons } from '@/components/tools/tool-link-buttons';
-
-function getToolImage(tool: Tool) {
-  const uiImage = PlaceHolderImages.find((img) => img.id === 'ui-tool-1');
-  const apiImage = PlaceHolderImages.find((img) => img.id === 'api-tool-1');
-  const prodImage = PlaceHolderImages.find(
-    (img) => img.id === 'productivity-1'
-  );
-
-  switch (tool.categories.category_name) {
-    case 'UI':
-    case 'CSS':
-    case 'Icons':
-    case 'Frameworks':
-      return uiImage;
-    case 'Backend Services':
-    case 'Javascript':
-    case 'Scripting':
-      return apiImage;
-    case 'Productivity':
-      return prodImage;
-    default:
-      return uiImage;
-  }
-}
 
 type ToolsClientPageProps = {
   tools: Tool[];
@@ -123,7 +98,7 @@ export function ToolsClientPage({
     <>
       <ToolDetailModal
         tool={selectedTool}
-        image={selectedTool ? getToolImage(selectedTool as Tool) : undefined}
+        image={undefined}
         onClose={() => setSelectedToolIndex(null)}
         onNext={handleNext}
         onPrevious={handlePrevious}
@@ -222,7 +197,6 @@ export function ToolsClientPage({
             <div className="flex flex-col gap-4">
               {tools && tools.length > 0 ? (
                 tools.map((tool, index) => {
-                  const image = getToolImage(tool as Tool);
                   return (
                     <motion.div
                       key={tool.id}
@@ -231,14 +205,13 @@ export function ToolsClientPage({
                       className="cursor-pointer"
                     >
                       <Card className="p-4 flex flex-col md:flex-row gap-6 items-start hover:bg-card/80 transition-colors">
-                        {image && (
-                          <div className="relative h-24 w-24 flex-shrink-0">
+                        {tool.logo_url && (
+                          <div className="relative h-20 w-20 flex-shrink-0 bg-muted/20 rounded-md p-3 flex items-center justify-center">
                             <Image
-                              src={image.imageUrl}
+                              src={tool.logo_url}
                               alt={tool.name}
                               fill
-                              className="object-cover rounded-md"
-                              data-ai-hint={image.imageHint}
+                              className="object-contain"
                             />
                           </div>
                         )}
