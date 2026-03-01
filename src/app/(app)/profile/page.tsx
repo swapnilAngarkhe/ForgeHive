@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+import { Breadcrumb } from '@/components/ui/breadcrumb';
 
 function getInitials(name: string) {
   return name
@@ -12,7 +13,7 @@ function getInitials(name: string) {
 }
 
 export default async function ProfilePage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
@@ -30,9 +31,16 @@ export default async function ProfilePage() {
   const name = user.user_metadata?.name || 'Anonymous';
   const avatarUrl = user.user_metadata?.avatar_url;
 
+  const breadcrumbItems = [
+    { title: 'Home', href: '/' },
+    { title: 'Profile' },
+  ];
+
   return (
     <div className="w-full p-4 md:p-10">
       <div className="container mx-auto max-w-4xl py-8">
+        <Breadcrumb items={breadcrumbItems} className="mb-6" />
+        
         <div className="flex items-center gap-6 mb-8">
           <Avatar className="h-24 w-24">
             <AvatarImage src={avatarUrl} alt={name} />
