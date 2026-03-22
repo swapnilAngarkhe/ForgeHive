@@ -10,13 +10,33 @@ export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
     return { error: error.message };
+  }
+
+  const user = data.user;
+
+  // Create profile if doesn't exist
+  if (user) {
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', user.id)
+      .single();
+
+    if (!existingProfile) {
+      await supabase.from('profiles').insert({
+        id: user.id,
+        email: user.email,
+        name: user.user_metadata?.name || 'User',
+        role: 'user',
+      });
+    }
   }
 
   revalidatePath('/', 'layout');
