@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
+import type { User } from '@supabase/supabase-js';
+import { logout } from '@/lib/actions/auth';
 
 import { Button } from '@/components/ui/button';
 
@@ -29,7 +31,7 @@ const Ticker = () => {
   );
 };
 
-export function LandingHeader() {
+export function LandingHeader({ user }: { user: User | null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement>(null);
@@ -68,7 +70,6 @@ export function LandingHeader() {
   }, []);
 
   const toggleMenu = () => {
-    // We use a function for setState to get the latest state and prevent race conditions
     setIsMenuOpen((prev) => {
       const nextState = !prev;
       if (nextState) {
@@ -114,15 +115,33 @@ export function LandingHeader() {
 
             {/* Right Section */}
             <div className="flex items-center gap-2">
-              <Button asChild variant="ghost">
-                <Link href="/login">Login</Link>
-              </Button>
-              <Button
-                asChild
-                className="bg-accent text-accent-foreground hover:bg-accent/90"
-              >
-                <Link href="/register">Join</Link>
-              </Button>
+              {user ? (
+                <>
+                  <Button asChild variant="ghost">
+                    <Link href="/profile">Profile</Link>
+                  </Button>
+                  <form action={logout}>
+                    <Button
+                      type="submit"
+                      className="bg-accent text-accent-foreground hover:bg-accent/90"
+                    >
+                      Logout
+                    </Button>
+                  </form>
+                </>
+              ) : (
+                <>
+                  <Button asChild variant="ghost">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className="bg-accent text-accent-foreground hover:bg-accent/90"
+                  >
+                    <Link href="/register">Join</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
 

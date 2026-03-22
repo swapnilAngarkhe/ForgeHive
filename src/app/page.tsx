@@ -1,5 +1,9 @@
 import { InteractiveLanding } from '@/components/landing/interactive-landing';
+import { createClient } from '@/lib/supabase/server';
 
-export default function HomePage() {
-  return <InteractiveLanding />;
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  return <InteractiveLanding user={user} />;
 }
