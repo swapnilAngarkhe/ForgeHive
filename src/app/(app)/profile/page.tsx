@@ -6,7 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Shield, LogOut } from 'lucide-react';
+import { User, Mail, Shield, LogOut, Bookmark, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -19,11 +21,30 @@ export default async function ProfilePage() {
     redirect('/login');
   }
 
+  // Fetch profile
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
+
+  // Fetch favorites
+  const { data: favorites } = await supabase
+    .from('favorites')
+    .select('tool_id')
+    .eq('user_id', user.id);
+
+  const toolIds = favorites?.map((f) => f.tool_id) || [];
+
+  let savedTools = [];
+  if (toolIds.length > 0) {
+    const { data } = await supabase
+      .from('tools')
+      .select('*, categories(category_name)')
+      .in('id', toolIds);
+
+    savedTools = data || [];
+  }
 
   const name = profile?.name || user.user_metadata?.name || 'User';
   const initials = name
@@ -33,7 +54,7 @@ export default async function ProfilePage() {
     .toUpperCase();
 
   return (
-    <div className="flex flex-1 items-center justify-center p-4 md:p-10">
+    <div className="flex flex-1 flex-col items-center p-4 md:p-10 gap-8 max-w-5xl mx-auto w-full">
       <div className="w-full max-w-md space-y-6">
         <Card className="border-border/50 shadow-xl overflow-hidden">
           <CardHeader className="text-center pb-2 pt-8">
@@ -94,11 +115,68 @@ export default async function ProfilePage() {
             </form>
           </CardContent>
         </Card>
-        
-        <p className="text-center text-xs text-muted-foreground font-medium">
-          ForgeHive Account Dashboard
-        </p>
       </div>
+
+      <div className="w-full space-y-6">
+        <div className="flex items-center gap-2 px-2">
+          <Bookmark className="h-5 w-5 text-accent" />
+          <h2 className="text-2xl font-bold font-headline">Saved Tools</h2>
+          <Badge variant="outline" className="ml-2">
+            {savedTools.length}
+          </Badge>
+        </div>
+
+        {savedTools.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {savedTools.map((tool) => (
+              <Card key={tool.id} className="p-4 flex gap-4 items-center hover:bg-muted/30 transition-colors group">
+                {tool.logo_url && (
+                  <div className="relative h-12 w-12 flex-shrink-0 bg-muted/20 rounded-md p-2 flex items-center justify-center">
+                    <Image
+                      src={tool.logo_url}
+                      alt={tool.name}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold truncate">{tool.name}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    {tool.categories && (
+                      <Badge variant="secondary" className="text-[10px] py-0 px-1.5">
+                        #{tool.categories.category_name}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <Button asChild size="icon" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Link href={`/tools?q=${tool.name}`}>
+                    <ExternalLink className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card className="border-dashed p-12 text-center flex flex-col items-center gap-4">
+            <div className="p-4 rounded-full bg-muted/50">
+              <Bookmark className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-lg font-medium">No saved tools yet</p>
+              <p className="text-sm text-muted-foreground">Browse our collection and save tools you find interesting.</p>
+            </div>
+            <Button asChild variant="outline" className="mt-2">
+              <Link href="/tools">Explore Tools</Link>
+            </Button>
+          </Card>
+        )}
+      </div>
+      
+      <p className="text-center text-xs text-muted-foreground font-medium pb-8">
+        ForgeHive Account Dashboard
+      </p>
     </div>
   );
 }
