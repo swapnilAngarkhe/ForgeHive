@@ -23,6 +23,7 @@ type ToolDetailModalProps = {
   onPrevious: () => void;
   hasNext: boolean;
   hasPrevious: boolean;
+  favoriteToolIds: number[];
 };
 
 export function ToolDetailModal({
@@ -32,6 +33,7 @@ export function ToolDetailModal({
   onPrevious,
   hasNext,
   hasPrevious,
+  favoriteToolIds,
 }: ToolDetailModalProps) {
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -92,7 +94,10 @@ export function ToolDetailModal({
                 </CardDescription>
               </CardContent>
               <CardFooter className="flex justify-center gap-3 p-6 border-t">
-                <ToolLinkButtons tool={tool} />
+                <ToolLinkButtons 
+                  tool={tool} 
+                  isSaved={favoriteToolIds.includes(tool.id)}
+                />
               </CardFooter>
             </Card>
           </motion.div>

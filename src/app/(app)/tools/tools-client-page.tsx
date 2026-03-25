@@ -107,6 +107,7 @@ export function ToolsClientPage({
           selectedToolIndex !== null && selectedToolIndex < tools.length - 1
         }
         hasPrevious={selectedToolIndex !== null && selectedToolIndex > 0}
+        favoriteToolIds={favoriteToolIds}
       />
       <div className="flex w-full h-full">
         {/* Left Sidebar */}
@@ -234,6 +235,7 @@ export function ToolsClientPage({
                             tool={tool}
                             buttonSize="sm"
                             onButtonClick={(e) => e.stopPropagation()}
+                            isSaved={favoriteToolIds.includes(tool.id)}
                           />
                         </div>
                       </Card>
