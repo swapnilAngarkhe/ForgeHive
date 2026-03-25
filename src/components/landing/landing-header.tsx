@@ -101,18 +101,6 @@ export function LandingHeader({ user }: { user: User | null }) {
               </Button>
             </div>
 
-            {/* Center Section */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Link
-                href="/"
-                className="font-bold text-xl text-foreground"
-                prefetch={false}
-                onClick={isMenuOpen ? toggleMenu : undefined}
-              >
-                FH
-              </Link>
-            </div>
-
             {/* Right Section */}
             <div className="flex items-center gap-2">
               {user ? (
