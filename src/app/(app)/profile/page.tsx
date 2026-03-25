@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/actions/auth';
 import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { logout } from '@/lib/actions/auth';
@@ -7,9 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Shield, LogOut, Bookmark, ExternalLink } from 'lucide-react';
+import { Mail, Shield, LogOut, Bookmark } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ToolLinkButtons } from '@/components/tools/tool-link-buttons';
 
 export default async function ProfilePage() {
   const supabase = await createSupabaseServerClient();
@@ -130,9 +130,9 @@ export default async function ProfilePage() {
         {savedTools.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {savedTools.map((tool) => (
-              <Card key={tool.id} className="p-4 flex gap-4 items-center hover:bg-muted/30 transition-colors group">
+              <Card key={tool.id} className="p-4 flex items-center gap-4 hover:bg-muted/30 transition-colors">
                 {tool.logo_url && (
-                  <div className="relative h-12 w-12 flex-shrink-0 bg-muted/20 rounded-md p-2 flex items-center justify-center">
+                  <div className="relative h-12 w-12 flex-shrink-0">
                     <Image
                       src={tool.logo_url}
                       alt={tool.name}
@@ -141,21 +141,18 @@ export default async function ProfilePage() {
                     />
                   </div>
                 )}
+
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold truncate">{tool.name}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    {tool.categories && (
-                      <Badge variant="secondary" className="text-[10px] py-0 px-1.5">
-                        #{tool.categories.category_name}
-                      </Badge>
-                    )}
-                  </div>
+                  <h3 className="font-semibold truncate">{tool.name}</h3>
                 </div>
-                <Button asChild size="icon" variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Link href={`/tools?q=${tool.name}`}>
-                    <ExternalLink className="h-4 w-4" />
-                  </Link>
-                </Button>
+
+                <div className="flex gap-2">
+                  <ToolLinkButtons
+                    tool={tool}
+                    isSaved={true}
+                    buttonSize="sm"
+                  />
+                </div>
               </Card>
             ))}
           </div>
