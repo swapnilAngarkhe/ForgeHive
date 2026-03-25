@@ -54,7 +54,7 @@ export default async function ProfilePage() {
     .toUpperCase();
 
   return (
-    <div className="flex flex-1 flex-col items-center p-4 md:p-10 gap-12 max-w-5xl mx-auto w-full">
+    <div className="flex flex-1 flex-col items-center p-4 md:p-10 gap-12 max-w-5xl mx-auto w-full animate-in fade-in duration-300">
       <div className="w-full max-w-md space-y-6">
         <Card className="border-border/50 shadow-xl overflow-hidden">
           <CardHeader className="text-center pb-2 pt-8">

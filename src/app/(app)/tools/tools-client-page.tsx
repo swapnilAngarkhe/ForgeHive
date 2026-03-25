@@ -69,7 +69,7 @@ export function ToolsClientPage({
   const currentCategory = searchParams?.category || 'All';
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full h-full animate-in fade-in duration-300">
       {/* Left Sidebar */}
       <aside className="w-64 shrink-0 border-r border-border hidden md:flex flex-col">
         <div className="sticky top-16 h-[calc(100vh-4rem)] p-6 overflow-y-auto">
