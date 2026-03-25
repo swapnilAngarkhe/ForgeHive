@@ -24,7 +24,6 @@ export function ToolLinkButtons({
   className,
 }: ToolLinkButtonsProps) {
   const [saved, setSaved] = React.useState(isSaved ?? false);
-  const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
 
   React.useEffect(() => {
@@ -36,19 +35,28 @@ export function ToolLinkButtons({
     e.stopPropagation();
     onButtonClick?.(e);
 
-    const previousSaved = saved;
-    const newSaved = !saved;
-    setSaved(newSaved);
-    setLoading(true);
+    // 🔥 Optimistic update (instant UI change)
+    setSaved((prev) => !prev);
 
-    const result = await toggleFavorite(tool.id);
-    
-    setLoading(false);
-    if (result.error) {
-      setSaved(previousSaved);
+    try {
+      const result = await toggleFavorite(tool.id);
+      
+      if (result.error) {
+        // ❌ Revert UI if the server returns an error
+        setSaved((prev) => !prev);
+        toast({
+          title: 'Error',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      // ❌ Revert UI if the network request fails
+      setSaved((prev) => !prev);
+      console.error('Failed to toggle favorite:', error);
       toast({
-        title: 'Error',
-        description: result.error,
+        title: 'Network Error',
+        description: 'Failed to update favorites. Please try again.',
         variant: 'destructive',
       });
     }
@@ -60,11 +68,10 @@ export function ToolLinkButtons({
         variant={saved ? 'secondary' : 'default'}
         size={buttonSize}
         onClick={handleSave}
-        disabled={loading}
         className="flex-1 min-w-[100px]"
       >
         <Bookmark className={cn("h-4 w-4 mr-2", saved ? 'fill-current' : '')} />
-        {loading ? '...' : saved ? 'Saved' : 'Save'}
+        {saved ? 'Saved' : 'Save'}
       </Button>
 
       {tool.url && (
@@ -78,7 +85,10 @@ export function ToolLinkButtons({
             href={tool.url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={onButtonClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              onButtonClick?.(e);
+            }}
             className="flex items-center gap-2"
           >
             <Globe className="h-4 w-4" />
@@ -98,7 +108,10 @@ export function ToolLinkButtons({
             href={tool.github_url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={onButtonClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              onButtonClick?.(e);
+            }}
             className="flex items-center gap-2"
           >
             <Github className="h-4 w-4" />
