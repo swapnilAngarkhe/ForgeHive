@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Github, Bookmark, ExternalLink } from 'lucide-react';
+import { Github, Bookmark, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Tool } from '@/lib/db-types';
 import { toggleFavorite } from '@/lib/actions/favorites';
@@ -14,6 +14,7 @@ type ToolLinkButtonsProps = {
   buttonSize?: 'sm' | 'default' | 'lg' | 'icon' | null | undefined;
   isSaved?: boolean;
   className?: string;
+  variant?: 'compact' | 'full';
 };
 
 export function ToolLinkButtons({
@@ -22,15 +23,17 @@ export function ToolLinkButtons({
   buttonSize = 'default',
   isSaved,
   className,
+  variant = 'full',
 }: ToolLinkButtonsProps) {
   const [saved, setSaved] = React.useState(isSaved ?? false);
+  const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
 
   React.useEffect(() => {
     setSaved(isSaved ?? false);
   }, [isSaved]);
 
-  const handleToggleFavorite = async (e: React.MouseEvent) => {
+  const handleSave = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     onButtonClick?.(e);
@@ -38,9 +41,11 @@ export function ToolLinkButtons({
     const previousSaved = saved;
     const newSaved = !saved;
     setSaved(newSaved);
+    setLoading(true);
 
     const result = await toggleFavorite(tool.id);
     
+    setLoading(false);
     if (result.error) {
       setSaved(previousSaved);
       toast({
@@ -54,21 +59,29 @@ export function ToolLinkButtons({
   return (
     <div className={cn("flex flex-wrap gap-2", className)}>
       <Button
-        variant={saved ? 'default' : 'outline'}
-        size={buttonSize}
-        onClick={handleToggleFavorite}
-        className="flex-1 min-w-[100px] h-9"
+        variant={saved ? 'secondary' : 'default'}
+        size={buttonSize === 'sm' ? 'icon' : (variant === 'compact' ? 'icon' : buttonSize)}
+        onClick={handleSave}
+        disabled={loading}
+        className={cn(variant === 'full' && "flex-1 min-w-[100px] h-9")}
       >
-        <Bookmark className={cn("h-4 w-4", saved ? 'fill-current' : '')} />
-        <span>{saved ? 'Saved' : 'Save'}</span>
+        {variant === 'compact' ? (
+          <Bookmark className={cn("h-4 w-4", saved ? 'fill-current' : '')} />
+        ) : loading ? (
+          '...'
+        ) : saved ? (
+          'Saved'
+        ) : (
+          'Save'
+        )}
       </Button>
 
       {tool.url && (
         <Button 
           asChild 
-          size={buttonSize} 
+          size={variant === 'compact' ? 'icon' : buttonSize} 
           variant="secondary"
-          className="flex-1 min-w-[100px] h-9"
+          className={cn(variant === 'full' && "flex-1 min-w-[100px] h-9")}
         >
           <a
             href={tool.url}
@@ -77,8 +90,11 @@ export function ToolLinkButtons({
             onClick={onButtonClick}
             className="flex items-center gap-2"
           >
-            <ExternalLink className="h-4 w-4" />
-            <span>Visit Site</span>
+            {variant === 'compact' ? (
+              <Globe className="h-4 w-4" />
+            ) : (
+              'Visit Website'
+            )}
           </a>
         </Button>
       )}
@@ -86,9 +102,9 @@ export function ToolLinkButtons({
       {tool.github_url && (
         <Button
           asChild
-          variant="secondary"
-          size={buttonSize}
-          className="flex-1 min-w-[100px] h-9"
+          variant={tool.url ? 'secondary' : 'default'}
+          size={variant === 'compact' ? 'icon' : buttonSize}
+          className={cn(variant === 'full' && "flex-1 min-w-[100px] h-9")}
         >
           <a
             href={tool.github_url}
@@ -97,8 +113,14 @@ export function ToolLinkButtons({
             onClick={onButtonClick}
             className="flex items-center gap-2"
           >
-            <Github className="h-4 w-4" />
-            <span>GitHub</span>
+            {variant === 'compact' ? (
+              <Github className="h-4 w-4" />
+            ) : (
+              <>
+                <Github className="h-4 w-4" />
+                GitHub
+              </>
+            )}
           </a>
         </Button>
       )}
