@@ -82,11 +82,11 @@ export function LandingHeader({ user }: { user: User | null }) {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6">
-      <div className="w-full max-w-md flex flex-col items-center gap-3 px-4">
+    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center">
+      <div className="w-full max-w-sm flex flex-col items-center gap-2">
         <div
           ref={menuContainerRef}
-          className="relative w-full h-12 bg-card shadow-lg border border-border overflow-hidden"
+          className="relative w-full h-12 bg-background/60 backdrop-blur-md border border-border/50 shadow-md overflow-hidden"
         >
           <nav className="relative flex h-12 w-full items-center justify-between p-2 px-4">
             {/* Left Section */}
