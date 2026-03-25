@@ -42,7 +42,6 @@ export function ToolLinkButtons({
       const result = await toggleFavorite(tool.id);
       
       if (result.error) {
-        // ❌ Revert UI if the server returns an error
         setSaved((prev) => !prev);
         toast({
           title: 'Error',
@@ -51,7 +50,7 @@ export function ToolLinkButtons({
         });
       }
     } catch (error) {
-      // ❌ Revert UI if the network request fails
+
       setSaved((prev) => !prev);
       console.error('Failed to toggle favorite:', error);
       toast({
