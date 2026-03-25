@@ -14,7 +14,6 @@ type ToolLinkButtonsProps = {
   buttonSize?: 'sm' | 'default' | 'lg' | 'icon' | null | undefined;
   isSaved?: boolean;
   className?: string;
-  variant?: 'compact' | 'full';
 };
 
 export function ToolLinkButtons({
@@ -23,7 +22,6 @@ export function ToolLinkButtons({
   buttonSize = 'default',
   isSaved,
   className,
-  variant = 'full',
 }: ToolLinkButtonsProps) {
   const [saved, setSaved] = React.useState(isSaved ?? false);
   const [loading, setLoading] = React.useState(false);
@@ -60,28 +58,21 @@ export function ToolLinkButtons({
     <div className={cn("flex flex-wrap gap-2", className)}>
       <Button
         variant={saved ? 'secondary' : 'default'}
-        size={buttonSize === 'sm' ? 'icon' : (variant === 'compact' ? 'icon' : buttonSize)}
+        size={buttonSize}
         onClick={handleSave}
         disabled={loading}
-        className={cn(variant === 'full' && "flex-1 min-w-[100px] h-9")}
+        className="flex-1 min-w-[100px]"
       >
-        {variant === 'compact' ? (
-          <Bookmark className={cn("h-4 w-4", saved ? 'fill-current' : '')} />
-        ) : loading ? (
-          '...'
-        ) : saved ? (
-          'Saved'
-        ) : (
-          'Save'
-        )}
+        <Bookmark className={cn("h-4 w-4 mr-2", saved ? 'fill-current' : '')} />
+        {loading ? '...' : saved ? 'Saved' : 'Save'}
       </Button>
 
       {tool.url && (
         <Button 
           asChild 
-          size={variant === 'compact' ? 'icon' : buttonSize} 
+          size={buttonSize} 
           variant="secondary"
-          className={cn(variant === 'full' && "flex-1 min-w-[100px] h-9")}
+          className="flex-1 min-w-[100px]"
         >
           <a
             href={tool.url}
@@ -90,11 +81,8 @@ export function ToolLinkButtons({
             onClick={onButtonClick}
             className="flex items-center gap-2"
           >
-            {variant === 'compact' ? (
-              <Globe className="h-4 w-4" />
-            ) : (
-              'Visit Website'
-            )}
+            <Globe className="h-4 w-4" />
+            Website
           </a>
         </Button>
       )}
@@ -102,9 +90,9 @@ export function ToolLinkButtons({
       {tool.github_url && (
         <Button
           asChild
-          variant={tool.url ? 'secondary' : 'default'}
-          size={variant === 'compact' ? 'icon' : buttonSize}
-          className={cn(variant === 'full' && "flex-1 min-w-[100px] h-9")}
+          variant="secondary"
+          size={buttonSize}
+          className="flex-1 min-w-[100px]"
         >
           <a
             href={tool.github_url}
@@ -113,14 +101,8 @@ export function ToolLinkButtons({
             onClick={onButtonClick}
             className="flex items-center gap-2"
           >
-            {variant === 'compact' ? (
-              <Github className="h-4 w-4" />
-            ) : (
-              <>
-                <Github className="h-4 w-4" />
-                GitHub
-              </>
-            )}
+            <Github className="h-4 w-4" />
+            GitHub
           </a>
         </Button>
       )}
