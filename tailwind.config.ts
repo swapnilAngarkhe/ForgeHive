@@ -14,6 +14,7 @@ export default {
         headline: ['"Space Grotesk"', 'sans-serif'],
         display: ['"Bebas Neue"', 'sans-serif'],
         code: ['monospace'],
+        poppins: ['Poppins', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

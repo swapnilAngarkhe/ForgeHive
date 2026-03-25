@@ -158,7 +158,7 @@ export function LandingHeader({ user }: { user: User | null }) {
               Browse Tools
             </Link>
             <Link
-              href="#"
+              href="/about"
               className="text-muted-foreground hover:text-foreground text-lg font-medium"
               prefetch={false}
               onClick={toggleMenu}
