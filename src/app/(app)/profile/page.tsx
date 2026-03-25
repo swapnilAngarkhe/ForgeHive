@@ -8,8 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Shield, LogOut, Bookmark } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ToolLinkButtons } from '@/components/tools/tool-link-buttons';
+import { ToolCard } from '@/components/tools/tool-card';
 
 export default async function ProfilePage() {
   const supabase = await createSupabaseServerClient();
@@ -55,7 +54,7 @@ export default async function ProfilePage() {
     .toUpperCase();
 
   return (
-    <div className="flex flex-1 flex-col items-center p-4 md:p-10 gap-8 max-w-5xl mx-auto w-full">
+    <div className="flex flex-1 flex-col items-center p-4 md:p-10 gap-12 max-w-5xl mx-auto w-full">
       <div className="w-full max-w-md space-y-6">
         <Card className="border-border/50 shadow-xl overflow-hidden">
           <CardHeader className="text-center pb-2 pt-8">
@@ -128,32 +127,14 @@ export default async function ProfilePage() {
         </div>
 
         {savedTools.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
             {savedTools.map((tool) => (
-              <Card key={tool.id} className="p-4 flex items-center gap-4 hover:bg-muted/30 transition-colors">
-                {tool.logo_url && (
-                  <div className="relative h-12 w-12 flex-shrink-0">
-                    <Image
-                      src={tool.logo_url}
-                      alt={tool.name}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                )}
-
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold truncate">{tool.name}</h3>
-                </div>
-
-                <div className="flex gap-2">
-                  <ToolLinkButtons
-                    tool={tool}
-                    isSaved={true}
-                    buttonSize="sm"
-                  />
-                </div>
-              </Card>
+              <ToolCard 
+                key={tool.id} 
+                tool={tool} 
+                isSaved={true}
+                className="w-full"
+              />
             ))}
           </div>
         ) : (
