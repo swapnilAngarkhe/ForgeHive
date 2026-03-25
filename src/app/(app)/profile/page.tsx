@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/actions/auth';
+import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { logout } from '@/lib/actions/auth';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default async function ProfilePage() {
-  const supabase = await createClient();
+  const supabase = await createSupabaseServerClient();
 
   const {
     data: { user },
