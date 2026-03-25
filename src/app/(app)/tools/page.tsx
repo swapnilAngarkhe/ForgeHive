@@ -14,6 +14,21 @@ export default async function ToolsPage(props: {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let favoriteToolIds: number[] = [];
+
+  if (user) {
+    const { data: favorites } = await supabase
+      .from('favorites')
+      .select('tool_id')
+      .eq('user_id', user.id);
+
+    favoriteToolIds = favorites?.map((f) => f.tool_id) || [];
+  }
+
   let query = supabase.from('tools').select('*, categories(category_name)');
 
   if (searchParams?.q) {
@@ -25,11 +40,6 @@ export default async function ToolsPage(props: {
   // if (error) {
   //   console.error('Error fetching tools:', error);
   // }
-
-  console.log("----- SUPABASE DEBUG -----");
-  console.log("Data:", dbTools);
-  console.log("Error:", JSON.stringify(error, null, 2));
-  console.log("--------------------------");
 
   const uniqueTools = dbTools || [];
 
@@ -71,6 +81,7 @@ export default async function ToolsPage(props: {
       searchParams={searchParams}
       currentPage={currentPage}
       totalPages={totalPages}
+      favoriteToolIds={favoriteToolIds}
     />
   );
 }

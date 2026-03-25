@@ -24,6 +24,7 @@ type ToolsClientPageProps = {
   };
   currentPage: number;
   totalPages: number;
+  favoriteToolIds: number[];
 };
 
 function PaginationControls({
@@ -67,6 +68,7 @@ export function ToolsClientPage({
   searchParams,
   currentPage,
   totalPages,
+  favoriteToolIds,
 }: ToolsClientPageProps) {
   const [selectedToolIndex, setSelectedToolIndex] = React.useState<
     number | null
@@ -213,7 +215,7 @@ export function ToolsClientPage({
                               className="object-contain"
                             />
                           </div>
-                        )}j
+                        )}
                         <div className="flex-1">
                           <h3 className="text-lg font-bold font-headline">
                             {tool.name}

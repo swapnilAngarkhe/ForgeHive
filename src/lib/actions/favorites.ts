@@ -29,7 +29,7 @@ export async function toggleFavorite(toolId: number) {
     .maybeSingle();
 
   if (existing) {
-    // 🔴 Remove favorite if it already exists
+    //  Remove favorite if it already exists
     const { error: deleteError } = await supabase
       .from('favorites')
       .delete()
@@ -43,7 +43,7 @@ export async function toggleFavorite(toolId: number) {
     revalidatePath('/profile');
     return { status: 'removed' };
   } else {
-    // 🟢 Add favorite if it doesn't exist
+    //  Add favorite if it doesn't exist
     const { error: insertError } = await supabase.from('favorites').insert({
       user_id: user.id,
       tool_id: toolId,
