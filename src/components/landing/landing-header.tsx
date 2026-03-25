@@ -166,7 +166,7 @@ export function LandingHeader({ user }: { user: User | null }) {
               About
             </Link>
             <Link
-              href="#"
+              href="/contact"
               className="text-muted-foreground hover:text-foreground text-lg font-medium"
               prefetch={false}
               onClick={toggleMenu}
