@@ -109,15 +109,15 @@ export function ToolsClientPage({
       <div className="flex-1 h-[calc(100vh-6rem)] overflow-hidden">
         <div className="flex flex-col max-w-4xl mx-auto h-full px-6 md:px-10">
           
-          {/* 🔹 Fixed Top Section */}
-          <div className="flex flex-col gap-6 py-6 border-b border-border bg-background sticky top-0 z-10">
+          {/* 🔹 Fixed Top Section - Blends with Background */}
+          <div className="flex flex-col gap-6 py-6 bg-background sticky top-0 z-10">
             
             <form className="flex w-full items-center space-x-2">
               <Input
                 type="search"
                 name="q"
                 placeholder="Search tools..."
-                className="flex-1"
+                className="flex-1 bg-transparent border-border/50 focus-visible:ring-accent"
                 defaultValue={searchParams?.q || ''}
               />
               {searchParams?.category && searchParams.category !== 'All' && (
@@ -128,7 +128,9 @@ export function ToolsClientPage({
                 />
               )}
               <input type="hidden" name="page" value="1" />
-              <Button type="submit">Search</Button>
+              <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                Search
+              </Button>
             </form>
 
             {/* Mobile categories - visible only on mobile */}
@@ -162,7 +164,7 @@ export function ToolsClientPage({
           </div>
 
           {/* 🔹 Scrollable Tools Section */}
-          <div className="flex-1 overflow-y-auto pt-8 pr-2 scroll-area">
+          <div className="flex-1 overflow-y-auto pt-2 pr-2 scroll-area">
             
             <div className="grid grid-cols-1 gap-8">
               {tools && tools.length > 0 ? (
