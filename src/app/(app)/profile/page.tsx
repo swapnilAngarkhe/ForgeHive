@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { LogOut, Bookmark } from 'lucide-react';
 import Link from 'next/link';
 import { ToolCard } from '@/components/tools/tool-card';
+import { CopyButton } from '@/components/profile/copy-button';
 
 export default async function ProfilePage() {
   const supabase = await createSupabaseServerClient();
@@ -57,7 +58,7 @@ export default async function ProfilePage() {
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-border/50 pb-8">
         <div className="flex items-center gap-6">
           {/* Avatar (LEFT) */}
-          <Avatar className="h-24 w-24 border border-border/50">
+          <Avatar className="h-24 w-24 border border-border/50 shadow-sm">
             <AvatarImage src={profile?.avatar_url} alt={name} />
             <AvatarFallback className="text-xl font-bold bg-accent text-accent-foreground">
               {initials}
@@ -70,19 +71,21 @@ export default async function ProfilePage() {
               {name}
             </h2>
 
-            <p className="text-muted-foreground text-sm">
-              {user.email}
-            </p>
+            <div className="flex items-center text-muted-foreground text-sm group">
+              <span>{user.email}</span>
+              <CopyButton text={user.email || ''} label="Email" />
+            </div>
 
-            <p className="text-xs text-muted-foreground mt-2">
-              ID: {user.id}
-            </p>
+            <div className="flex items-center text-xs text-muted-foreground mt-2">
+              <span>ID: {user.id}</span>
+              <CopyButton text={user.id} label="User ID" />
+            </div>
 
             <p className="text-xs text-muted-foreground">
               Member since: {new Date(user.created_at).toLocaleDateString()}
             </p>
 
-            <p className="text-xs text-muted-foreground uppercase">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mt-1">
               {profile?.role || 'user'}
             </p>
           </div>
@@ -117,6 +120,7 @@ export default async function ProfilePage() {
                 key={tool.id} 
                 tool={tool} 
                 isSaved={true}
+                user={user}
               />
             ))}
           </div>
