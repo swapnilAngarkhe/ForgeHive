@@ -82,8 +82,8 @@ export function ToolsClientPage({
     <div className="flex w-full h-full animate-in fade-in duration-300">
       {/* Left Sidebar */}
       <aside className="w-64 shrink-0 border-r border-border hidden md:flex flex-col">
-        <div className="sticky top-16 h-[calc(100vh-4rem)] p-6 overflow-y-auto">
-          <h2 className="text-lg font-semibold mb-4 font-headline">
+        <div className="sticky top-20 h-[calc(100vh-5rem)] p-6 overflow-y-auto">
+          <h2 className="text-lg font-semibold mb-4 font-headline uppercase tracking-tighter">
             Categories
           </h2>
           <div className="flex flex-col gap-2">
@@ -105,9 +105,9 @@ export function ToolsClientPage({
                   variant={
                     currentCategory === category ? 'default' : 'ghost'
                   }
-                  className="justify-start"
+                  className="justify-start text-sm"
                 >
-                  <Link href={href}>#{category}</Link>
+                  <Link href={href}>#{category.toLowerCase()}</Link>
                 </Button>
               );
             })}
@@ -119,33 +119,34 @@ export function ToolsClientPage({
       <div className="flex-1 h-[calc(100vh-6rem)] overflow-hidden">
         <div className="flex flex-col max-w-4xl mx-auto h-full px-6 md:px-10">
           
-          {/* 🔹 Fixed Top Section - Blends with Background */}
-          <div className="flex flex-col gap-6 py-6 bg-background sticky top-0 z-10">
-            
-            <form className="flex w-full items-center space-x-2">
-              <Input
-                type="search"
-                name="q"
-                placeholder="Search tools..."
-                className="flex-1 bg-transparent border-border/50 focus-visible:ring-accent"
-                defaultValue={searchParams?.q || ''}
-              />
-              {searchParams?.category && searchParams.category !== 'All' && (
-                <input
-                  type="hidden"
-                  name="category"
-                  value={searchParams.category}
+          {/* 🔹 Fixed Top Section */}
+          <div className="sticky top-0 z-20 py-8 bg-background/0">
+            <form className="w-full max-w-4xl mx-auto">
+              <div className="flex items-center gap-3 p-3 border border-border/50 bg-card/60 backdrop-blur-md shadow-md">
+                <Input
+                  type="search"
+                  name="q"
+                  placeholder="Search tools..."
+                  className="flex-1 bg-transparent border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 h-10 text-base"
+                  defaultValue={searchParams?.q || ''}
                 />
-              )}
-              <input type="hidden" name="page" value="1" />
-              <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                Search
-              </Button>
+                {searchParams?.category && searchParams.category !== 'All' && (
+                  <input
+                    type="hidden"
+                    name="category"
+                    value={searchParams.category}
+                  />
+                )}
+                <input type="hidden" name="page" value="1" />
+                <Button type="submit" className="px-8 bg-accent text-accent-foreground hover:bg-accent/90 transition-all">
+                  Search
+                </Button>
+              </div>
             </form>
 
             {/* Mobile categories - visible only on mobile */}
-            <div className="flex items-center flex-wrap gap-2 md:hidden">
-              <span className="text-sm font-semibold">Categories:</span>
+            <div className="mt-4 flex items-center flex-wrap gap-2 md:hidden">
+              <span className="text-sm font-semibold text-muted-foreground mr-2">Categories:</span>
               {categories.map((category) => {
                 const params = new URLSearchParams(searchParams);
                 if (category === 'All') {
@@ -165,7 +166,7 @@ export function ToolsClientPage({
                       }
                       className="cursor-pointer"
                     >
-                      #{category}
+                      #{category.toLowerCase()}
                     </Badge>
                   </Link>
                 );
@@ -174,22 +175,21 @@ export function ToolsClientPage({
           </div>
 
           {/* 🔹 Scrollable Tools Section */}
-          <div className="flex-1 overflow-y-auto pt-2 pr-2 scroll-area">
-            
-            <div className="grid grid-cols-1 gap-8">
+          <div className="flex-1 overflow-y-auto pr-2 scroll-area pb-20">
+            <div className="grid grid-cols-1 gap-12">
               {tools && tools.length > 0 ? (
                 tools.map((tool) => (
                   <div key={tool.id} className="flex flex-col items-center">
                     <ToolCard 
                       tool={tool} 
                       isSaved={favoriteToolIds.includes(tool.id)} 
-                      className="w-full max-w-2xl"
+                      className="w-full max-w-2xl border-none shadow-none bg-transparent"
                     />
                   </div>
                 ))
               ) : (
-                <div className="text-center py-20">
-                  <p className="text-muted-foreground">No tools found matching your criteria.</p>
+                <div className="text-center py-20 bg-muted/20 border border-dashed border-border p-12">
+                  <p className="text-muted-foreground font-medium">No tools found matching your criteria.</p>
                 </div>
               )}
             </div>
@@ -200,7 +200,6 @@ export function ToolsClientPage({
                 totalPages={totalPages}
               />
             )}
-            
           </div>
         </div>
       </div>
