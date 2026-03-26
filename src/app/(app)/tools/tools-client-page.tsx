@@ -43,7 +43,12 @@ function PaginationControls({
     <div className="flex items-center justify-center pt-8 pb-12 gap-4">
       {currentPage > 1 && (
         <Button asChild variant="outline">
-          <Link href={createPageURL(currentPage - 1)}>← Previous</Link>
+          <Link 
+            href={createPageURL(currentPage - 1)}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            ← Previous
+          </Link>
         </Button>
       )}
       <span className="text-sm text-muted-foreground">
@@ -51,7 +56,12 @@ function PaginationControls({
       </span>
       {currentPage < totalPages && (
         <Button asChild variant="outline">
-          <Link href={createPageURL(currentPage + 1)}>Next →</Link>
+          <Link 
+            href={createPageURL(currentPage + 1)}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            Next →
+          </Link>
         </Button>
       )}
     </div>
