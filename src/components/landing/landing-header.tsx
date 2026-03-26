@@ -10,7 +10,7 @@ import { logout } from '@/lib/actions/auth';
 import { Button } from '@/components/ui/button';
 
 const TickerText = () => {
-  const text = 'not backed by open labs';
+  const text = 'not backed by Y Combinator';
   const repeatedText = Array(15).fill(text).join('   ✦   ');
 
   return (
@@ -82,7 +82,7 @@ export function LandingHeader({ user }: { user: User | null }) {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6">
+    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center">
       <div className="w-full max-w-sm flex flex-col items-center gap-2 px-2">
         <div
           ref={menuContainerRef}
