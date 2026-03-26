@@ -29,19 +29,26 @@ export default async function ToolsPage(props: {
     favoriteToolIds = favorites?.map((f) => f.tool_id) || [];
   }
 
+  const searchStr = searchParams?.q?.trim() || '';
+  const isHashtagSearch = searchStr.startsWith('#');
+  
   let query = supabase.from('tools').select('*, categories(category_name)');
 
-  if (searchParams?.q) {
-    query = query.ilike('name', `%${searchParams.q}%`);
+  // If it's a normal text search, we can filter by name on the server
+  if (searchStr && !isHashtagSearch) {
+    query = query.ilike('name', `%${searchStr}%`);
   }
 
   const { data: dbTools, error } = await query;
+  let uniqueTools = dbTools || [];
 
-  // if (error) {
-  //   console.error('Error fetching tools:', error);
-  // }
-
-  const uniqueTools = dbTools || [];
+  // If it's a hashtag search, we filter by category name
+  if (isHashtagSearch) {
+    const categoryTag = searchStr.substring(1).toLowerCase();
+    uniqueTools = uniqueTools.filter(tool => 
+      tool.categories?.category_name.toLowerCase().includes(categoryTag)
+    );
+  }
 
   const allCategories = uniqueTools
     .map((tool) => tool.categories?.category_name)
