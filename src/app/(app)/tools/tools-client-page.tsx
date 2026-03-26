@@ -120,7 +120,7 @@ export function ToolsClientPage({
         <div className="flex flex-col w-full h-full px-6 md:px-10">
           
           {/* 🔹 Fixed Top Section */}
-          <div className="sticky top-0 z-20 pt-14 pb-8 bg-background/0">
+          <div className="sticky top-0 z-20 pt-4 pb-8 bg-background/0">
             <form className="w-full mt-6 -translate-x-[13px]">
               <div className="flex items-center gap-3 p-3 border border-border/50 bg-card/60 backdrop-blur-md shadow-md">
                 <Input
