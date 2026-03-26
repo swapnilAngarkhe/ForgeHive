@@ -14,7 +14,7 @@ export default async function AppLayout({
   return (
     <div className="flex min-h-screen w-full flex-col">
       <AppHeader user={user} />
-      <main className="flex flex-1 bg-muted/40 pt-24 justify-center">
+      <main className="flex flex-1 bg-muted/40 pt-16 justify-center">
         <div className="w-full max-w-5xl px-4">
           {children}
         </div>
