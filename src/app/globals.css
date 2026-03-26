@@ -74,3 +74,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Scrollbar for Tools List */
+.scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-area::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 8px;
+}
+
+.scroll-area::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}

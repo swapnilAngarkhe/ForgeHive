@@ -162,7 +162,7 @@ export function ToolsClientPage({
           </div>
 
           {/* 🔹 Scrollable Tools Section */}
-          <div className="flex-1 overflow-y-auto pt-8 pr-2">
+          <div className="flex-1 overflow-y-auto pt-8 pr-2 scroll-area">
             
             <div className="grid grid-cols-1 gap-8">
               {tools && tools.length > 0 ? (
