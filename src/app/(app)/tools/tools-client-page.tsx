@@ -27,7 +27,7 @@ function PaginationControls({
   currentPage,
   totalPages,
 }: {
-  currentPage: number;
+  currentPage,
   totalPages: number;
 }) {
   const pathname = usePathname();
@@ -117,11 +117,11 @@ export function ToolsClientPage({
 
       {/* Right Content - Split Layout */}
       <div className="flex-1 h-[calc(100vh-6rem)] overflow-hidden">
-        <div className="flex flex-col max-w-4xl mx-auto h-full px-6 md:px-10">
+        <div className="flex flex-col max-w-3xl mx-auto h-full px-6 md:px-10">
           
           {/* 🔹 Fixed Top Section */}
           <div className="sticky top-0 z-20 py-8 bg-background/0">
-            <form className="w-full max-w-4xl mx-auto">
+            <form className="w-full max-w-3xl mx-auto">
               <div className="flex items-center gap-3 p-3 border border-border/50 bg-card/60 backdrop-blur-md shadow-md">
                 <Input
                   type="search"
