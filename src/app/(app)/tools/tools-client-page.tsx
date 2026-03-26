@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import type { Tool } from '@/lib/db-types';
 import { ToolCard } from '@/components/tools/tool-card';
+import type { User } from '@supabase/supabase-js';
 
 type ToolsClientPageProps = {
   tools: Tool[];
@@ -21,6 +22,7 @@ type ToolsClientPageProps = {
   currentPage: number;
   totalPages: number;
   favoriteToolIds: number[];
+  user: User | null;
 };
 
 function PaginationControls({
@@ -75,6 +77,7 @@ export function ToolsClientPage({
   currentPage,
   totalPages,
   favoriteToolIds,
+  user,
 }: ToolsClientPageProps) {
   const currentCategory = searchParams?.category || 'All';
 
@@ -184,6 +187,7 @@ export function ToolsClientPage({
                       tool={tool} 
                       isSaved={favoriteToolIds.includes(tool.id)} 
                       className="w-full max-w-2xl border-none shadow-none bg-transparent"
+                      user={user}
                     />
                   </div>
                 ))

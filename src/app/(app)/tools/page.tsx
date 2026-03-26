@@ -89,6 +89,7 @@ export default async function ToolsPage(props: {
       currentPage={currentPage}
       totalPages={totalPages}
       favoriteToolIds={favoriteToolIds}
+      user={user}
     />
   );
 }

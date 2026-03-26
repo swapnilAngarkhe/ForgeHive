@@ -7,6 +7,7 @@ import type { Tool } from '@/lib/db-types';
 import { toggleFavorite } from '@/lib/actions/favorites';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import type { User } from '@supabase/supabase-js';
 
 type ToolLinkButtonsProps = {
   tool: Tool;
@@ -14,6 +15,7 @@ type ToolLinkButtonsProps = {
   buttonSize?: 'sm' | 'default' | 'lg' | 'icon' | null | undefined;
   isSaved?: boolean;
   className?: string;
+  user: User | null;
 };
 
 export function ToolLinkButtons({
@@ -22,6 +24,7 @@ export function ToolLinkButtons({
   buttonSize = 'default',
   isSaved,
   className,
+  user,
 }: ToolLinkButtonsProps) {
   const [saved, setSaved] = React.useState(isSaved ?? false);
   const { toast } = useToast();
@@ -34,6 +37,11 @@ export function ToolLinkButtons({
     e.preventDefault();
     e.stopPropagation();
     onButtonClick?.(e);
+
+    if (!user) {
+      window.location.href = '/login';
+      return;
+    }
 
     // 🔥 Optimistic update (instant UI change)
     setSaved((prev) => !prev);
@@ -50,7 +58,6 @@ export function ToolLinkButtons({
         });
       }
     } catch (error) {
-
       setSaved((prev) => !prev);
       console.error('Failed to toggle favorite:', error);
       toast({

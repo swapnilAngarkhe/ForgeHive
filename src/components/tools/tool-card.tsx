@@ -7,14 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ToolLinkButtons } from './tool-link-buttons';
 import { cn } from '@/lib/utils';
+import type { User } from '@supabase/supabase-js';
 
 type ToolCardProps = {
   tool: Tool;
   isSaved: boolean;
   className?: string;
+  user: User | null;
 };
 
-export function ToolCard({ tool, isSaved, className }: ToolCardProps) {
+export function ToolCard({ tool, isSaved, className, user }: ToolCardProps) {
   return (
     <Card className={cn("overflow-hidden flex flex-col h-full", className)}>
       <CardHeader className="flex flex-row items-start gap-4 space-y-0">
@@ -51,6 +53,7 @@ export function ToolCard({ tool, isSaved, className }: ToolCardProps) {
             tool={tool}
             isSaved={isSaved}
             buttonSize="sm"
+            user={user}
           />
         </div>
       </CardContent>
