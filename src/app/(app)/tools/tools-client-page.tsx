@@ -27,7 +27,7 @@ function PaginationControls({
   currentPage,
   totalPages,
 }: {
-  currentPage,
+  currentPage: number;
   totalPages: number;
 }) {
   const pathname = usePathname();
@@ -121,7 +121,7 @@ export function ToolsClientPage({
           
           {/* 🔹 Fixed Top Section */}
           <div className="sticky top-0 z-20 py-8 bg-background/0">
-            <form className="w-full max-w-3xl mx-auto">
+            <form className="w-full max-w-3xl mx-auto mt-6 -translate-x-[13px]">
               <div className="flex items-center gap-3 p-3 border border-border/50 bg-card/60 backdrop-blur-md shadow-md">
                 <Input
                   type="search"

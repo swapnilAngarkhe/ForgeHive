@@ -5,7 +5,7 @@ import { UserNav } from './user-nav';
 export function AppHeader({ user }: { user: User | null }) {
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center">
-      <div className="w-full max-w-3xl flex flex-col items-center">
+      <div className="w-full max-w-3xl flex flex-col items-center translate-x-[10px]">
         <div className="relative w-full h-14 px-5 bg-background/70 backdrop-blur-lg border border-border/60 shadow-lg flex items-center justify-between">
           {/* LEFT */}
           <div className="flex items-center gap-8 h-full">
