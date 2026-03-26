@@ -110,7 +110,7 @@ export function ToolsClientPage({
         <div className="flex flex-col max-w-4xl mx-auto h-full px-6 md:px-10">
           
           {/* 🔹 Fixed Top Section */}
-          <div className="flex flex-col gap-6 py-6 border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10">
+          <div className="flex flex-col gap-6 py-6 border-b border-border bg-background sticky top-0 z-10">
             
             <form className="flex w-full items-center space-x-2">
               <Input
