@@ -36,7 +36,7 @@ export function CopyButton({ text, label }: CopyButtonProps) {
     <Button
       variant="ghost"
       size="icon"
-      className="h-4 w-4 ml-1.5 inline-flex items-center justify-center text-muted-foreground hover:text-accent transition-colors duration-300"
+      className="h-4 w-4 ml-1.5 inline-flex items-center justify-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all duration-300 ease-in-out"
       onClick={handleCopy}
       title={`Copy ${label}`}
     >
