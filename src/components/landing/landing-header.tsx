@@ -48,7 +48,7 @@ export function LandingHeader({ user }: { user: User | null }) {
     tl.current = gsap
       .timeline({ paused: true, reversed: true })
       .to(menuContainerRef.current, {
-        height: '220px',
+        height: user ? '280px' : '220px',
         duration: 0.4,
         ease: 'power2.out',
       })
@@ -67,7 +67,7 @@ export function LandingHeader({ user }: { user: User | null }) {
     return () => {
       tl.current?.kill();
     };
-  }, []);
+  }, [user]);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {
@@ -90,7 +90,7 @@ export function LandingHeader({ user }: { user: User | null }) {
         >
           <nav className="relative flex h-12 w-full items-center justify-between p-2 px-4">
             {/* Left Section */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-1">
               <Button
                 variant="ghost"
                 className="flex items-center gap-2 text-foreground"
@@ -101,22 +101,24 @@ export function LandingHeader({ user }: { user: User | null }) {
               </Button>
             </div>
 
+            {/* Center Section (Logo - Only visible when authenticated in bar) */}
+            {user && (
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Link 
+                  href="/" 
+                  className="font-display text-2xl text-foreground hover:text-accent transition-colors tracking-tighter"
+                >
+                  FH
+                </Link>
+              </div>
+            )}
+
             {/* Right Section */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-end gap-2 flex-1">
               {user ? (
-                <>
-                  <Button asChild variant="ghost">
-                    <Link href="/profile">Profile</Link>
-                  </Button>
-                  <form action={logout}>
-                    <Button
-                      type="submit"
-                      variant="accent"
-                    >
-                      Logout
-                    </Button>
-                  </form>
-                </>
+                <Button asChild variant="ghost">
+                  <Link href="/profile">Profile</Link>
+                </Button>
               ) : (
                 <>
                   <Button asChild variant="outline">
@@ -161,6 +163,18 @@ export function LandingHeader({ user }: { user: User | null }) {
             >
               Contact Us
             </Link>
+            
+            {user && (
+              <form action={logout}>
+                <Button 
+                  type="submit" 
+                  variant="ghost" 
+                  className="text-lg font-medium text-muted-foreground hover:text-destructive h-auto p-0"
+                >
+                  Logout
+                </Button>
+              </form>
+            )}
           </div>
         </div>
 
