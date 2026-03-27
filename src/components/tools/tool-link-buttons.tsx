@@ -69,14 +69,14 @@ export function ToolLinkButtons({
   };
 
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
+    <div className={cn("flex flex-wrap gap-1.5", className)}>
       <Button
         variant={saved ? 'subtle' : 'default'}
         size={buttonSize}
         onClick={handleSave}
-        className="flex-1 min-w-[100px]"
+        className="flex-1 text-xs h-8"
       >
-        <Bookmark className={cn("h-4 w-4 mr-2", saved ? 'fill-current' : '')} />
+        <Bookmark className={cn("h-3 w-3 mr-1.5", saved ? 'fill-current' : '')} />
         {saved ? 'Saved' : 'Save'}
       </Button>
 
@@ -85,7 +85,7 @@ export function ToolLinkButtons({
           asChild 
           size={buttonSize} 
           variant="subtle"
-          className="flex-1 min-w-[100px]"
+          className="flex-1 text-xs h-8"
         >
           <a
             href={tool.url}
@@ -95,9 +95,9 @@ export function ToolLinkButtons({
               e.stopPropagation();
               onButtonClick?.(e);
             }}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1.5"
           >
-            <Globe className="h-4 w-4" />
+            <Globe className="h-3 w-3" />
             Website
           </a>
         </Button>
@@ -108,7 +108,7 @@ export function ToolLinkButtons({
           asChild
           variant="subtle"
           size={buttonSize}
-          className="flex-1 min-w-[100px]"
+          className="flex-1 text-xs h-8"
         >
           <a
             href={tool.github_url}
@@ -118,9 +118,9 @@ export function ToolLinkButtons({
               e.stopPropagation();
               onButtonClick?.(e);
             }}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1.5"
           >
-            <Github className="h-4 w-4" />
+            <Github className="h-3 w-3" />
             GitHub
           </a>
         </Button>

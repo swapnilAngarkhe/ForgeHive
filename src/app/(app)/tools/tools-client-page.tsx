@@ -136,7 +136,7 @@ export function ToolsClientPage({
         </div>
       </aside>
 
-      {/* Right Content - Split Layout */}
+      {/* Right Content - Grid Layout */}
       <div className="flex-1 h-[calc(100vh-6rem)] overflow-hidden">
         <div className="flex flex-col w-full h-full px-6 md:px-10">
           
@@ -195,22 +195,21 @@ export function ToolsClientPage({
             </div>
           </div>
 
-          {/* 🔹 Scrollable Tools Section */}
+          {/* 🔹 Scrollable Tools Section (GRID) */}
           <div className="flex-1 overflow-y-auto pr-2 scroll-area pb-20">
-            <div className="grid grid-cols-1 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {tools && tools.length > 0 ? (
                 tools.map((tool) => (
-                  <div key={tool.id} className="flex flex-col items-center">
-                    <ToolCard 
-                      tool={tool} 
-                      isSaved={favoriteToolIds.includes(tool.id)} 
-                      className="w-full max-w-2xl border-none shadow-none bg-transparent"
-                      user={user}
-                    />
-                  </div>
+                  <ToolCard 
+                    key={tool.id} 
+                    tool={tool} 
+                    isSaved={favoriteToolIds.includes(tool.id)} 
+                    className="w-full"
+                    user={user}
+                  />
                 ))
               ) : (
-                <div className="text-center py-20 bg-muted/20 border border-dashed border-border p-12">
+                <div className="col-span-full text-center py-20 bg-muted/20 border border-dashed border-border p-12">
                   <p className="text-muted-foreground font-medium">No tools found matching your criteria.</p>
                 </div>
               )}
