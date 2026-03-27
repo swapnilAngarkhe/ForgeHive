@@ -75,7 +75,7 @@ function PaginationControls({
   };
 
   return (
-    <div className="flex items-center justify-center pt-16 pb-12 gap-2">
+    <div className="flex items-center justify-center pt-28 pb-16 gap-2 w-full">
       <Button
         asChild
         variant="outline"
@@ -202,7 +202,7 @@ export function ToolsClientPage({
           
           {/* 🔹 Fixed Top Section */}
           <div className="sticky top-0 z-20 pt-4 pb-8 bg-background/0">
-            <form className="w-full mt-6 -translate-x-[13px]">
+            <form className="w-full mt-6">
               <div className="flex items-center gap-3 p-3 border border-border/50 bg-card/60 backdrop-blur-md shadow-md">
                 <Input
                   type="search"
