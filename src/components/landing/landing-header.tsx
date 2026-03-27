@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
-import { useState, useRef, useLayoutEffect } from 'react';
-import { gsap } from 'gsap';
+import { useState } from 'react';
 import type { User } from '@supabase/supabase-js';
 
 import { Button } from '@/components/ui/button';
@@ -31,62 +30,16 @@ const Ticker = () => {
 };
 
 export function LandingHeader({ user }: { user: User | null }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuContainerRef = useRef<HTMLDivElement>(null);
-  const menuItemsRef = useRef<HTMLDivElement>(null);
-
-  const tl = useRef<gsap.core.Timeline | null>(null);
-
-  useLayoutEffect(() => {
-    if (!menuContainerRef.current || !menuItemsRef.current) return;
-
-    const menuItems = gsap.utils.toArray(menuItemsRef.current.children);
-
-    gsap.set(menuItems, { opacity: 0, y: 15 });
-
-    tl.current = gsap
-      .timeline({ paused: true, reversed: true })
-      .to(menuContainerRef.current, {
-        height: '220px', // Uniform height since logout is removed
-        duration: 0.4,
-        ease: 'power2.out',
-      })
-      .to(
-        menuItems,
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.05,
-          duration: 0.3,
-          ease: 'power2.out',
-        },
-        '-=0.2'
-      );
-
-    return () => {
-      tl.current?.kill();
-    };
-  }, []);
+  const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen((prev) => {
-      const nextState = !prev;
-      if (nextState) {
-        tl.current?.play();
-      } else {
-        tl.current?.reverse();
-      }
-      return nextState;
-    });
+    setShowMenu((prev) => !prev);
   };
 
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center">
       <div className="w-full max-w-sm flex flex-col items-center gap-2 px-2">
-        <div
-          ref={menuContainerRef}
-          className="relative w-full h-12 bg-card shadow-lg border border-border overflow-hidden"
-        >
+        <div className="relative w-full h-12 bg-card shadow-lg border border-border overflow-hidden">
           <nav className="relative flex h-12 w-full items-center justify-between p-2 px-4">
             {/* Left Section */}
             <div className="flex items-center flex-1">
@@ -133,37 +86,36 @@ export function LandingHeader({ user }: { user: User | null }) {
               )}
             </div>
           </nav>
-
-          <div
-            ref={menuItemsRef}
-            className="absolute top-16 w-full pt-4 flex flex-col items-center gap-6"
-          >
-            <Link
-              href="/tools"
-              className="text-muted-foreground hover:text-foreground text-lg font-medium"
-              prefetch={false}
-              onClick={toggleMenu}
-            >
-              Browse Tools
-            </Link>
-            <Link
-              href="/about"
-              className="text-muted-foreground hover:text-foreground text-lg font-medium"
-              prefetch={false}
-              onClick={toggleMenu}
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="text-muted-foreground hover:text-foreground text-lg font-medium"
-              prefetch={false}
-              onClick={toggleMenu}
-            >
-              Contact Us
-            </Link>
-          </div>
         </div>
+
+        {/* Horizontal Menu Bar */}
+        {showMenu && (
+          <div className="w-full border-b border-border/30 bg-background/60 backdrop-blur-sm animate-in fade-in slide-in-from-top-1 duration-200">
+            <div className="flex items-center justify-center gap-8 py-2 text-sm">
+              <Link
+                href="/tools"
+                className="text-muted-foreground hover:text-foreground transition"
+                onClick={() => setShowMenu(false)}
+              >
+                Browse Tools
+              </Link>
+              <Link
+                href="/about"
+                className="text-muted-foreground hover:text-foreground transition"
+                onClick={() => setShowMenu(false)}
+              >
+                About
+              </Link>
+              <Link
+                href="/contact"
+                className="text-muted-foreground hover:text-foreground transition"
+                onClick={() => setShowMenu(false)}
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        )}
 
         <Ticker />
       </div>
