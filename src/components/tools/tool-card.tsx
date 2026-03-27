@@ -15,9 +15,10 @@ type ToolCardProps = {
   isSaved: boolean;
   className?: string;
   user: User | null;
+  onTagClick?: (category: string) => void;
 };
 
-export function ToolCard({ tool, isSaved, className, user }: ToolCardProps) {
+export function ToolCard({ tool, isSaved, className, user, onTagClick }: ToolCardProps) {
   return (
     <Card className={cn("overflow-hidden flex flex-col h-full", className)}>
       <CardHeader className="flex flex-row items-start gap-4 space-y-0">
@@ -38,18 +39,33 @@ export function ToolCard({ tool, isSaved, className, user }: ToolCardProps) {
             </CardTitle>
           </div>
           {tool.categories && (
-            <Link
-              href={`/tools?category=${tool.categories.category_name}`}
-              onClick={(e) => e.stopPropagation()}
-              className="inline-block mt-1"
-            >
-              <Badge 
-                variant="secondary" 
-                className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                #{tool.categories.category_name}
-              </Badge>
-            </Link>
+            <div className="mt-1">
+              {onTagClick ? (
+                <Badge
+                  variant="secondary"
+                  className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onTagClick(tool.categories.category_name);
+                  }}
+                >
+                  #{tool.categories.category_name}
+                </Badge>
+              ) : (
+                <Link
+                  href={`/tools?category=${tool.categories.category_name}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-block"
+                >
+                  <Badge 
+                    variant="secondary" 
+                    className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+                  >
+                    #{tool.categories.category_name}
+                  </Badge>
+                </Link>
+              )}
+            </div>
           )}
         </div>
       </CardHeader>
