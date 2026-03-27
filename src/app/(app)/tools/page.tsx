@@ -65,7 +65,7 @@ export default async function ToolsPage(props: {
       : uniqueTools;
 
   // Pagination Logic
-  const pageSize = 8;
+  const pageSize = 12;
   const totalTools = categorizedTools.length;
   const totalPages = Math.ceil(totalTools / pageSize);
 
