@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { Tool } from '@/lib/db-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -37,9 +38,18 @@ export function ToolCard({ tool, isSaved, className, user }: ToolCardProps) {
             </CardTitle>
           </div>
           {tool.categories && (
-            <Badge variant="secondary" className="mt-1">
-              #{tool.categories.category_name}
-            </Badge>
+            <Link
+              href={`/tools?category=${tool.categories.category_name}`}
+              onClick={(e) => e.stopPropagation()}
+              className="inline-block mt-1"
+            >
+              <Badge 
+                variant="secondary" 
+                className="cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                #{tool.categories.category_name}
+              </Badge>
+            </Link>
           )}
         </div>
       </CardHeader>
