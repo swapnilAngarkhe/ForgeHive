@@ -36,7 +36,14 @@
   }
  
   .dark {
-    --background: 226 37% 16%; /* Matches #1A2138 */
+    /* Brand Colors for Logo Reference:
+       Background: #1A2138
+       Accent (Purple): #C084FC
+       Primary (Blue): #6373A1
+       Foreground (White): #F8FAFC
+       Border (Dark Slate): #272E48
+    */
+    --background: 226 37% 16%; 
     --foreground: 210 40% 98%;
 
     --card: 225 29% 18%;
