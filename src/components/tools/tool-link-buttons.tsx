@@ -71,7 +71,7 @@ export function ToolLinkButtons({
   return (
     <div className={cn("flex flex-wrap gap-1.5", className)}>
       <Button
-        variant={saved ? 'subtle' : 'default'}
+        variant={saved ? 'default' : 'subtle'}
         size={buttonSize}
         onClick={handleSave}
         className="flex-1 text-xs h-8"
