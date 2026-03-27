@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import type { Tool } from '@/lib/db-types';
 import { ToolCard } from '@/components/tools/tool-card';
+import { ToolCardSkeleton } from '@/components/skeletons/tool-card-skeleton';
 import type { User } from '@supabase/supabase-js';
 
 type ToolsClientPageProps = {
@@ -48,7 +49,6 @@ function PaginationControls({
     const pages: (number | 'ellipsis')[] = [];
     if (totalPages <= 1) return pages;
 
-    // Always include first page
     pages.push(1);
 
     if (currentPage > 3) {
@@ -66,7 +66,6 @@ function PaginationControls({
       pages.push('ellipsis');
     }
 
-    // Always include last page if it's not already the first page
     if (totalPages > 1) {
       pages.push(totalPages);
     }
@@ -142,7 +141,12 @@ export function ToolsClientPage({
   user,
 }: ToolsClientPageProps) {
   const [showAllCategories, setShowAllCategories] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   const currentCategory = searchParams?.category || 'All';
+
+  React.useEffect(() => {
+    setIsLoading(false);
+  }, [tools]);
 
   const visibleCategories = showAllCategories
     ? categories
@@ -224,42 +228,19 @@ export function ToolsClientPage({
                 </Button>
               </div>
             </form>
-
-            {/* Mobile categories - visible only on mobile */}
-            <div className="mt-4 flex items-center flex-wrap gap-2 md:hidden">
-              <span className="text-sm font-semibold text-muted-foreground mr-2">Categories:</span>
-              {categories.map((category) => {
-                const params = new URLSearchParams(searchParams);
-                if (category === 'All') {
-                  params.delete('category');
-                } else {
-                  params.set('category', category);
-                }
-                params.set('page', '1');
-                const queryString = params.toString();
-                const href = queryString ? `/tools?${queryString}` : '/tools';
-
-                return (
-                  <Link key={category} href={href}>
-                    <Badge
-                      variant={
-                        currentCategory === category ? 'default' : 'secondary'
-                      }
-                      className="cursor-pointer"
-                    >
-                      #{category.toLowerCase()}
-                    </Badge>
-                  </Link>
-                );
-              })}
-            </div>
           </div>
 
           {/* 🔹 Scrollable Tools Section (GRID) */}
           <div className="flex-1 overflow-y-auto pr-2 scroll-area pb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {tools && tools.length > 0 ? (
-                tools.map((tool) => (
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <ToolCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : tools && tools.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {tools.map((tool) => (
                   <ToolCard 
                     key={tool.id} 
                     tool={tool} 
@@ -267,15 +248,15 @@ export function ToolsClientPage({
                     className="w-full"
                     user={user}
                   />
-                ))
-              ) : (
-                <div className="col-span-full text-center py-20 bg-muted/20 border border-dashed border-border p-12">
-                  <p className="text-muted-foreground font-medium">No tools found matching your criteria.</p>
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="col-span-full text-center py-20 bg-muted/20 border border-dashed border-border p-12">
+                <p className="text-muted-foreground font-medium">No tools found matching your criteria.</p>
+              </div>
+            )}
 
-            {totalPages > 1 && (
+            {!isLoading && totalPages > 1 && (
               <PaginationControls
                 currentPage={currentPage}
                 totalPages={totalPages}

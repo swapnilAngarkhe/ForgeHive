@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { LogOut, Bookmark, X } from 'lucide-react';
 import Link from 'next/link';
 import { ToolCard } from '@/components/tools/tool-card';
+import { ToolCardSkeleton } from '@/components/skeletons/tool-card-skeleton';
 import { CopyButton } from '@/components/profile/copy-button';
 import { logout } from '@/lib/actions/auth';
 import type { User } from '@supabase/supabase-js';
@@ -19,6 +20,13 @@ type ProfileClientPageProps = {
 
 export function ProfileClientPage({ user, profile, savedTools }: ProfileClientPageProps) {
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Small delay to prevent layout shift if data is ready instantly
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const name = profile?.name || user.user_metadata?.name || 'User';
   const initials = name
@@ -108,7 +116,13 @@ export function ProfileClientPage({ user, profile, savedTools }: ProfileClientPa
           )}
         </div>
 
-        {filteredTools.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <ToolCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredTools.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTools.map((tool) => (
               <ToolCard 
