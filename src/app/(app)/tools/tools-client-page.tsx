@@ -75,7 +75,7 @@ function PaginationControls({
   };
 
   return (
-    <div className="flex items-center justify-center pt-8 pb-12 gap-2">
+    <div className="flex items-center justify-center pt-16 pb-12 gap-2">
       <Button
         asChild
         variant="outline"
