@@ -125,7 +125,7 @@ export function ToolsClientPage({
             {categories.length > MAX_VISIBLE_CATEGORIES && (
               <button
                 onClick={() => setShowAllCategories((prev) => !prev)}
-                className="text-xs text-muted-foreground hover:text-foreground mt-2 text-left px-2"
+                className="text-xs text-accent hover:opacity-80 mt-2 text-left px-2 font-medium transition-opacity"
               >
                 {showAllCategories
                   ? 'Show less'
