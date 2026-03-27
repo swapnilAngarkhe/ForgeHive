@@ -5,7 +5,6 @@ import { Menu } from 'lucide-react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import type { User } from '@supabase/supabase-js';
-import { logout } from '@/lib/actions/auth';
 
 import { Button } from '@/components/ui/button';
 
@@ -48,7 +47,7 @@ export function LandingHeader({ user }: { user: User | null }) {
     tl.current = gsap
       .timeline({ paused: true, reversed: true })
       .to(menuContainerRef.current, {
-        height: user ? '280px' : '220px',
+        height: '220px', // Uniform height since logout is removed
         duration: 0.4,
         ease: 'power2.out',
       })
@@ -67,7 +66,7 @@ export function LandingHeader({ user }: { user: User | null }) {
     return () => {
       tl.current?.kill();
     };
-  }, [user]);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {
@@ -101,7 +100,7 @@ export function LandingHeader({ user }: { user: User | null }) {
               </Button>
             </div>
 
-            {/* Center Section (Logo - Only visible when authenticated in bar) */}
+            {/* Center Section (Branding - Only visible when authenticated) */}
             {user && (
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Link 
@@ -163,18 +162,6 @@ export function LandingHeader({ user }: { user: User | null }) {
             >
               Contact Us
             </Link>
-            
-            {user && (
-              <form action={logout}>
-                <Button 
-                  type="submit" 
-                  variant="ghost" 
-                  className="text-lg font-medium text-muted-foreground hover:text-destructive h-auto p-0"
-                >
-                  Logout
-                </Button>
-              </form>
-            )}
           </div>
         </div>
 
