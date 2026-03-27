@@ -75,7 +75,7 @@ function PaginationControls({
   };
 
   return (
-    <div className="flex items-center justify-center pt-28 pb-16 gap-2 w-full">
+    <div className="flex items-center justify-center pt-16 pb-6 gap-2 w-full">
       <Button
         asChild
         variant="outline"
@@ -256,7 +256,7 @@ export function ToolsClientPage({
           </div>
 
           {/* 🔹 Scrollable Tools Section (GRID) */}
-          <div className="flex-1 overflow-y-auto pr-2 scroll-area pb-20">
+          <div className="flex-1 overflow-y-auto pr-2 scroll-area pb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {tools && tools.length > 0 ? (
                 tools.map((tool) => (
