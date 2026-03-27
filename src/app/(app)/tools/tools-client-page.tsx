@@ -159,7 +159,7 @@ export function ToolsClientPage({
                   />
                 )}
                 <input type="hidden" name="page" value="1" />
-                <Button type="submit" className="px-8 bg-accent text-accent-foreground hover:bg-accent/90 transition-all">
+                <Button type="submit" variant="accent" className="px-8">
                   Search
                 </Button>
               </div>
