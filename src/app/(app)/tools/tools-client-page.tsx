@@ -25,6 +25,8 @@ type ToolsClientPageProps = {
   user: User | null;
 };
 
+const MAX_VISIBLE_CATEGORIES = 6;
+
 function PaginationControls({
   currentPage,
   totalPages,
@@ -79,7 +81,12 @@ export function ToolsClientPage({
   favoriteToolIds,
   user,
 }: ToolsClientPageProps) {
+  const [showAllCategories, setShowAllCategories] = React.useState(false);
   const currentCategory = searchParams?.category || 'All';
+
+  const visibleCategories = showAllCategories
+    ? categories
+    : categories.slice(0, MAX_VISIBLE_CATEGORIES);
 
   return (
     <div className="flex w-full h-full animate-in fade-in duration-300">
@@ -90,7 +97,7 @@ export function ToolsClientPage({
             Categories
           </h2>
           <div className="flex flex-col gap-2">
-            {categories.map((category) => {
+            {visibleCategories.map((category) => {
               const params = new URLSearchParams(searchParams);
               if (category === 'All') {
                 params.delete('category');
@@ -108,12 +115,23 @@ export function ToolsClientPage({
                   variant={
                     currentCategory === category ? 'default' : 'ghost'
                   }
-                  className="justify-start text-sm"
+                  className="justify-start text-xs px-2 py-1 h-auto rounded-sm"
                 >
                   <Link href={href}>#{category.toLowerCase()}</Link>
                 </Button>
               );
             })}
+            
+            {categories.length > MAX_VISIBLE_CATEGORIES && (
+              <button
+                onClick={() => setShowAllCategories((prev) => !prev)}
+                className="text-xs text-muted-foreground hover:text-foreground mt-2 text-left px-2"
+              >
+                {showAllCategories
+                  ? 'Show less'
+                  : `+${categories.length - MAX_VISIBLE_CATEGORIES} more`}
+              </button>
+            )}
           </div>
         </div>
       </aside>
