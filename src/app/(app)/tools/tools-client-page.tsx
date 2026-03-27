@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -43,31 +44,90 @@ function PaginationControls({
     return `${pathname}?${params.toString()}`;
   };
 
+  const getPageNumbers = () => {
+    const pages: (number | 'ellipsis')[] = [];
+    if (totalPages <= 1) return pages;
+
+    // Always include first page
+    pages.push(1);
+
+    if (currentPage > 3) {
+      pages.push('ellipsis');
+    }
+
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (currentPage < totalPages - 2) {
+      pages.push('ellipsis');
+    }
+
+    // Always include last page if it's not already the first page
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   return (
-    <div className="flex items-center justify-center pt-8 pb-12 gap-4">
-      {currentPage > 1 && (
-        <Button asChild variant="outline">
-          <Link 
-            href={createPageURL(currentPage - 1)}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-            ← Previous
-          </Link>
-        </Button>
-      )}
-      <span className="text-sm text-muted-foreground">
-        Page {currentPage} of {totalPages}
-      </span>
-      {currentPage < totalPages && (
-        <Button asChild variant="outline">
-          <Link 
-            href={createPageURL(currentPage + 1)}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-            Next →
-          </Link>
-        </Button>
-      )}
+    <div className="flex items-center justify-center pt-8 pb-12 gap-2">
+      <Button
+        asChild
+        variant="outline"
+        size="icon"
+        className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+      >
+        <Link
+          href={createPageURL(currentPage - 1)}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Link>
+      </Button>
+
+      <div className="flex items-center gap-1">
+        {getPageNumbers().map((p, i) =>
+          p === 'ellipsis' ? (
+            <span key={`ellipsis-${i}`} className="px-2 text-muted-foreground select-none">
+              ...
+            </span>
+          ) : (
+            <Button
+              key={p}
+              asChild
+              variant={p === currentPage ? 'default' : 'outline'}
+              size="sm"
+              className="w-9 h-9 p-0"
+            >
+              <Link
+                href={createPageURL(p)}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                {p}
+              </Link>
+            </Button>
+          )
+        )}
+      </div>
+
+      <Button
+        asChild
+        variant="outline"
+        size="icon"
+        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+      >
+        <Link
+          href={createPageURL(currentPage + 1)}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Link>
+      </Button>
     </div>
   );
 }
@@ -93,7 +153,7 @@ export function ToolsClientPage({
       {/* Left Sidebar */}
       <aside className="w-64 shrink-0 border-r border-border hidden md:flex flex-col">
         <div className="sticky top-20 h-[calc(100vh-5rem)] p-6 overflow-y-auto">
-          <h2 className="text-lg font-semibold mb-4 font-headline uppercase tracking-tighter">
+          <h2 className="text-lg font-semibold mb-4 font-headline uppercase tracking-tighter text-foreground">
             Categories
           </h2>
           <div className="flex flex-col gap-2">
