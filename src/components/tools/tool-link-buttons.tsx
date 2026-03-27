@@ -71,7 +71,7 @@ export function ToolLinkButtons({
   return (
     <div className={cn("flex flex-wrap gap-2", className)}>
       <Button
-        variant={saved ? 'secondary' : 'default'}
+        variant={saved ? 'subtle' : 'default'}
         size={buttonSize}
         onClick={handleSave}
         className="flex-1 min-w-[100px]"
@@ -84,7 +84,7 @@ export function ToolLinkButtons({
         <Button 
           asChild 
           size={buttonSize} 
-          variant="secondary"
+          variant="subtle"
           className="flex-1 min-w-[100px]"
         >
           <a
@@ -106,7 +106,7 @@ export function ToolLinkButtons({
       {tool.github_url && (
         <Button
           asChild
-          variant="secondary"
+          variant="subtle"
           size={buttonSize}
           className="flex-1 min-w-[100px]"
         >

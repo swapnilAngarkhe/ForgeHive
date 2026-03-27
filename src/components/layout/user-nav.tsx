@@ -25,7 +25,7 @@ function getInitials(name: string) {
 export function UserNav({ user }: { user: User | null }) {
   if (!user) {
     return (
-      <Button asChild>
+      <Button asChild variant="outline">
         <Link href="/login">Login</Link>
       </Button>
     );

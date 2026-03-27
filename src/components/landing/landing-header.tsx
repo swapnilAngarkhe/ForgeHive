@@ -111,7 +111,7 @@ export function LandingHeader({ user }: { user: User | null }) {
                   <form action={logout}>
                     <Button
                       type="submit"
-                      className="bg-accent text-accent-foreground hover:bg-accent/90"
+                      variant="accent"
                     >
                       Logout
                     </Button>
@@ -119,12 +119,12 @@ export function LandingHeader({ user }: { user: User | null }) {
                 </>
               ) : (
                 <>
-                  <Button asChild variant="ghost">
+                  <Button asChild variant="outline">
                     <Link href="/login">Login</Link>
                   </Button>
                   <Button
                     asChild
-                    className="bg-accent text-accent-foreground hover:bg-accent/90"
+                    variant="accent"
                   >
                     <Link href="/register">Join</Link>
                   </Button>
