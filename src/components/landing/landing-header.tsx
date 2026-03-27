@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
-
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const TickerText = () => {
@@ -31,10 +32,17 @@ const Ticker = () => {
 
 export function LandingHeader({ user }: { user: User | null }) {
   const [showMenu, setShowMenu] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
   };
+
+  const navLinks = [
+    { name: 'Browse Tools', href: '/tools' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact Us', href: '/contact' },
+  ];
 
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center">
@@ -89,33 +97,32 @@ export function LandingHeader({ user }: { user: User | null }) {
         </div>
 
         {/* Horizontal Menu Bar */}
-        {showMenu && (
-          <div className="w-full border-b border-border/30 bg-background/60 backdrop-blur-sm animate-in fade-in slide-in-from-top-1 duration-200">
-            <div className="flex items-center justify-center gap-8 py-2 text-sm">
+        <div 
+          data-state={showMenu ? 'open' : 'closed'}
+          className={cn(
+            "w-full border-b border-border/30 bg-background/60 backdrop-blur-sm transition-all duration-200 ease-out overflow-hidden",
+            "data-[state=open]:opacity-100 data-[state=open]:translate-y-0 data-[state=open]:max-h-20",
+            "data-[state=closed]:opacity-0 data-[state=closed]:-translate-y-2 data-[state=closed]:max-h-0 pointer-events-none data-[state=open]:pointer-events-auto"
+          )}
+        >
+          <div className="flex items-center justify-center gap-8 py-2 text-sm">
+            {navLinks.map((link) => (
               <Link
-                href="/tools"
-                className="text-muted-foreground hover:text-foreground transition"
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "relative transition-all duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:bg-accent after:transition-all after:duration-200 hover:after:w-full",
+                  pathname === link.href
+                    ? "text-foreground font-medium after:w-full"
+                    : "text-muted-foreground hover:text-foreground after:w-0"
+                )}
                 onClick={() => setShowMenu(false)}
               >
-                Browse Tools
+                {link.name}
               </Link>
-              <Link
-                href="/about"
-                className="text-muted-foreground hover:text-foreground transition"
-                onClick={() => setShowMenu(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="text-muted-foreground hover:text-foreground transition"
-                onClick={() => setShowMenu(false)}
-              >
-                Contact Us
-              </Link>
-            </div>
+            ))}
           </div>
-        )}
+        </div>
 
         <Ticker />
       </div>
