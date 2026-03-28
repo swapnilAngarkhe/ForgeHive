@@ -91,7 +91,7 @@ export default function AboutPage() {
         {/* Developers Section */}
         <div className="space-y-8">
           <div className="flex items-center gap-3">
-            <+ Users className="h-8 w-8 text-accent" />
+            <Users className="h-8 w-8 text-accent" />
             <h2 className="text-3xl font-bold font-headline">Meet the Developers</h2>
           </div>
           
