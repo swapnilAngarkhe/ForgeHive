@@ -43,7 +43,7 @@ export default function AboutPage() {
       linkedin: "https://www.linkedin.com/in/ahmed-kazi-4891a2294/",
       email: "ahmedkazi477@gmail.com",
       role: "Backend Architect & Designer",
-      description: "A specialist in backend engineering and database design. Ahmed architected ForgeHive's data infrastructure using Supabase, where he expertly handled authentication flows and engineered robust SQL schemas. His focus on efficient table structures and secure data management ensures the platform's reliability and performance."
+      description: "A specialist in backend engineering and database design. Ahmed architected ForgeHive's data infrastructure using Supabase, where he expertly handled authentication flows and engineered robust SQL schemas. Efficient table structures and secure data management ensures the platform's reliability."
     }
   ];
 
