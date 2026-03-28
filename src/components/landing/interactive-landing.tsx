@@ -210,7 +210,7 @@ export function InteractiveLanding({ user }: { user: User | null }) {
 
       <LandingHeader user={user} />
 
-      <div ref={fRef} className="absolute -bottom-10 -left-4 mt-10">
+      <div ref={fRef} className="absolute -bottom-20 -left-4 mt-8">
         <div className="text-[60vh] font-semibold leading-none text-foreground font-display">
           F
         </div>
@@ -259,7 +259,7 @@ export function InteractiveLanding({ user }: { user: User | null }) {
             href="/tools"
             className="absolute -bottom-8 text-muted-foreground hover:text-accent transition-colors lowercase text-sm"
           >
-            [ dip open source ]
+            [ dip in open source ]
           </Link>
         </motion.div>
       </div>
