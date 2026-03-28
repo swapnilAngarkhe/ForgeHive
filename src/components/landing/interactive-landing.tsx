@@ -255,12 +255,41 @@ export function InteractiveLanding({ user }: { user: User | null }) {
 </defs>
 </svg>
           </div>
-          <Link
-            href="/tools"
-            className="absolute -bottom-8 text-muted-foreground hover:text-accent transition-colors lowercase text-sm"
+          <motion.div
+            className="absolute -bottom-8"
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
           >
-            [ dip in open source ]
-          </Link>
+            <Link
+              href="/tools"
+              className="relative lowercase text-sm text-muted-foreground transition-colors hover:text-accent"
+            >
+              <motion.span
+                className="inline-block"
+                style={{ filter: "url(#liquid-distortion)" }}
+                variants={{
+                  rest: { scale: 1 },
+                  hover: { scale: 1.03 },
+                }}
+                transition={{ duration: 0.3 }}
+                onHoverStart={() => {
+                  const filter = document.querySelector(
+                    '#liquid-distortion feDisplacementMap'
+                  );
+                  if (filter) filter.setAttribute('scale', '25');
+                }}
+                onHoverEnd={() => {
+                  const filter = document.querySelector(
+                    '#liquid-distortion feDisplacementMap'
+                  );
+                  if (filter) filter.setAttribute('scale', '0');
+                }}
+              >
+                [ dip in open source ]
+              </motion.span>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -307,6 +336,24 @@ export function InteractiveLanding({ user }: { user: User | null }) {
       >
         <span ref={techTextRef} />
       </motion.div>
+
+      <svg className="absolute w-0 h-0">
+        <filter id="liquid-distortion">
+          <feTurbulence
+            type="turbulence"
+            baseFrequency="0.02"
+            numOctaves="2"
+            result="turbulence"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="turbulence"
+            scale="0"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
     </div>
   );
 }
