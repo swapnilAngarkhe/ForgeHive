@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -212,7 +211,7 @@ export function InteractiveLanding({ user }: { user: User | null }) {
       <LandingHeader user={user} />
 
       <div ref={fRef} className="absolute -bottom-10 -left-4">
-        <div className="text-[60vh] font-semibold leading-none text-foreground font-display">
+        <div className="text-[60vh] font-semibold leading-none text-foreground font-display mt-10">
           F
         </div>
       </div>
