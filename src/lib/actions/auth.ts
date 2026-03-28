@@ -21,22 +21,14 @@ export async function login(formData: FormData) {
 
   const user = data.user;
 
-  // Create profile if doesn't exist
+  // Sync profile on login
   if (user) {
-    const { data: existingProfile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('id', user.id)
-      .single();
-
-    if (!existingProfile) {
-      await supabase.from('profiles').insert({
-        id: user.id,
-        email: user.email,
-        name: user.user_metadata?.name || 'User',
-        role: 'user',
-      });
-    }
+    await supabase.from('profiles').upsert({
+      id: user.id,
+      email: user.email,
+      name: user.user_metadata?.name || 'User',
+      role: 'user',
+    });
   }
 
   revalidatePath('/', 'layout');
@@ -66,9 +58,9 @@ export async function signup(formData: FormData) {
 
   const user = data.user;
 
-  // Insert into profiles ONLY if user exists
+  // Upsert profile ONLY if user exists
   if (user) {
-    await supabase.from('profiles').insert({
+    await supabase.from('profiles').upsert({
       id: user.id,
       name,
       email,
