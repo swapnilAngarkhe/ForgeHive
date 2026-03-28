@@ -269,21 +269,21 @@ export function InteractiveLanding({ user }: { user: User | null }) {
                 className="inline-block"
                 style={{ filter: "url(#liquid-distortion)" }}
                 variants={{
-                  rest: { scale: 1 },
-                  hover: { scale: 1.03 },
+                  rest: { scale: 1.03 },
+                  hover: { scale: 1 },
                 }}
                 transition={{ duration: 0.3 }}
                 onHoverStart={() => {
                   const filter = document.querySelector(
                     '#liquid-distortion feDisplacementMap'
                   );
-                  if (filter) filter.setAttribute('scale', '25');
+                  if (filter) filter.setAttribute('scale', '0');
                 }}
                 onHoverEnd={() => {
                   const filter = document.querySelector(
                     '#liquid-distortion feDisplacementMap'
                   );
-                  if (filter) filter.setAttribute('scale', '0');
+                  if (filter) filter.setAttribute('scale', '25');
                 }}
               >
                 [ dip in open source ]
@@ -348,7 +348,7 @@ export function InteractiveLanding({ user }: { user: User | null }) {
           <feDisplacementMap
             in="SourceGraphic"
             in2="turbulence"
-            scale="0"
+            scale="25"
             xChannelSelector="R"
             yChannelSelector="G"
           />
