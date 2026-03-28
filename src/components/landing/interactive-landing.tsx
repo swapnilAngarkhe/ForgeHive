@@ -282,9 +282,10 @@ export function InteractiveLanding({ user }: { user: User | null }) {
         >
           <path
             ref={pathRef}
-            stroke="hsl(var(--border))"
-            strokeWidth="1"
+            stroke="hsl(var(--accent))"
+            strokeWidth="1.5"
             fill="none"
+            style={{ filter: 'drop-shadow(0 0 10px hsl(var(--accent) / 0.8))' }}
           />
         </motion.svg>
       </div>
