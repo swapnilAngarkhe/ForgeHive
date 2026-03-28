@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -12,6 +13,7 @@ import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import Link from 'next/link';
 import { LandingHeader } from './landing-header';
 import type { User } from '@supabase/supabase-js';
+import { LandingGradient } from '@/components/gradient/landing-gradient';
 
 const tech = [
   'React',
@@ -199,11 +201,14 @@ export function InteractiveLanding({ user }: { user: User | null }) {
 
 
   if (!isMounted) {
-    return null; // Or a loading spinner
+    return null;
   }
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full min-h-screen overflow-hidden bg-background font-headline">
+    <div className="relative flex flex-col items-center justify-center w-full min-h-screen overflow-hidden font-headline">
+      <LandingGradient />
+      <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] -z-10" />
+
       <LandingHeader user={user} />
 
       <div ref={fRef} className="absolute -bottom-10 -left-4">
