@@ -42,8 +42,8 @@ export default function AboutPage() {
       github: "https://github.com/IAK477",
       linkedin: "https://www.linkedin.com/in/ahmed-kazi-4891a2294/",
       email: "ahmedkazi477@gmail.com",
-      role: "Core Contributor",
-      description: "Passionate about open-source and building modern web experiences that solve real-world problems for developers. Ahmed focuses on core functionality and community-driven features."
+      role: "Backend Architect & Designer",
+      description: "A specialist in backend engineering and database design. Ahmed architected ForgeHive's data infrastructure using Supabase, where he expertly handled authentication flows and engineered robust SQL schemas. His focus on efficient table structures and secure data management ensures the platform's reliability and performance."
     }
   ];
 
