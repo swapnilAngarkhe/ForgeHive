@@ -3,14 +3,53 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Code2, Rocket, Globe, ShieldCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { 
+  Code2, 
+  Rocket, 
+  Globe, 
+  ShieldCheck, 
+  Github, 
+  Linkedin, 
+  Mail, 
+  Users,
+  Copy
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AboutPage() {
+  const { toast } = useToast();
+
+  const handleCopyEmail = (email: string, name: string) => {
+    navigator.clipboard.writeText(email);
+    toast({
+      title: "Email Copied",
+      description: `${name}'s email has been copied to your clipboard.`,
+    });
+  };
+
+  const developers = [
+    {
+      name: "Swapnil",
+      github: "https://github.com/swapnilAngarkhe",
+      linkedin: "https://www.linkedin.com/in/swapnilangarkhe/",
+      email: "swapnilangarkhe@proton.me",
+      role: "Lead Developer"
+    },
+    {
+      name: "Ahmed",
+      github: "https://github.com/IAK477",
+      linkedin: "https://www.linkedin.com/in/ahmed-kazi-4891a2294/",
+      email: "ahmedkazi477@gmail.com",
+      role: "Core Contributor"
+    }
+  ];
+
   return (
     <div className="flex flex-1 flex-col items-center p-6 md:p-12 lg:p-20 bg-muted/40 font-poppins animate-in fade-in duration-500">
       <div className="w-full max-w-4xl space-y-12">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">About ForgeHive</h1>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight font-headline">About ForgeHive</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             A centralized platform for discovering curated open-source tools for developers.
           </p>
@@ -44,6 +83,55 @@ export default function AboutPage() {
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Developers Section */}
+        <div className="space-y-8">
+          <div className="flex items-center gap-3">
+            <Users className="h-8 w-8 text-accent" />
+            <h2 className="text-3xl font-bold font-headline">Meet the Developers</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {developers.map((dev) => (
+              <Card key={dev.name} className="border-none shadow-lg bg-card/50 backdrop-blur-sm group hover:bg-card/80 transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold">{dev.name}</CardTitle>
+                  <p className="text-sm text-accent uppercase tracking-widest font-semibold">{dev.role}</p>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <p className="text-muted-foreground">
+                    Passionate about open-source and building modern web experiences that solve real-world problems for developers.
+                  </p>
+                  
+                  <div className="flex items-center gap-3">
+                    <Button variant="outline" size="sm" asChild className="rounded-full hover:border-primary hover:text-primary transition-colors">
+                      <a href={dev.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="h-4 w-4 mr-2" />
+                        GitHub
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild className="rounded-full hover:border-blue-500 hover:text-blue-500 transition-colors">
+                      <a href={dev.linkedin} target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="h-4 w-4 mr-2" />
+                        LinkedIn
+                      </a>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleCopyEmail(dev.email, dev.name)}
+                      className="rounded-full hover:border-green-500 hover:text-green-500 transition-colors group/mail"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Email
+                      <Copy className="h-3 w-3 ml-2 opacity-0 group-hover/mail:opacity-100 transition-opacity" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         <Card className="border-none shadow-lg overflow-hidden">
@@ -95,7 +183,7 @@ export default function AboutPage() {
           </CardContent>
         </Card>
 
-        <footer className="text-center text-sm text-muted-foreground pt-8">
+        <footer className="text-center text-sm text-muted-foreground pt-8 pb-12">
           <p>© {new Date().getFullYear()} ForgeHive. Open Source for the Open Mind.</p>
         </footer>
       </div>
