@@ -203,6 +203,8 @@ export function InteractiveLanding({ user }: { user: User | null }) {
     return null;
   }
 
+  const dipText = '[ dip in open source ]';
+
   return (
     <div className="relative flex flex-col items-center justify-center w-full min-h-screen overflow-hidden font-headline">
       <LandingGradient />
@@ -263,9 +265,22 @@ export function InteractiveLanding({ user }: { user: User | null }) {
           >
             <Link
               href="/tools"
-              className="text-muted-foreground hover:text-accent transition-colors lowercase text-sm"
+              className="relative group lowercase text-sm text-muted-foreground transition-all duration-300 hover:text-accent flex items-center justify-center"
             >
-              [ dip open source ]
+              <span className="relative inline-block overflow-hidden px-1 py-1">
+                {dipText.split('').map((char, i) => (
+                  <span
+                    key={i}
+                    className="inline-block transition-transform duration-300 ease-out will-change-transform group-hover:-translate-y-[3px]"
+                    style={{
+                      transitionDelay: `${i * 15}ms`,
+                    }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
+                <span className="glow-sweep" />
+              </span>
             </Link>
           </motion.div>
         </motion.div>
