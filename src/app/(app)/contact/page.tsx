@@ -100,7 +100,7 @@ export default function ContactPage() {
         {/* Contact Form */}
         <Card className="border-none shadow-xl bg-card/50 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold font-headline">Send a Message</CardTitle>
+            <CardTitle className="text-2xl font-bold font-headline">Send a message / Submit your tool request</CardTitle>
             <CardDescription>
               Fill out the form below and our team will be in touch.
             </CardDescription>
