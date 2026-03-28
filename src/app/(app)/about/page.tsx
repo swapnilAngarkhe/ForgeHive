@@ -34,14 +34,16 @@ export default function AboutPage() {
       github: "https://github.com/swapnilAngarkhe",
       linkedin: "https://www.linkedin.com/in/swapnilangarkhe/",
       email: "swapnilangarkhe@proton.me",
-      role: "Lead Developer"
+      role: "Founder & Lead Engineer",
+      description: "A Full Stack Engineer and Web Designer proficient in Next.js, Django, and Flask, currently pivoting towards DevOps. Swapnil is the visionary behind ForgeHive, leading the frontend architecture, system integration, deployment, and version control."
     },
     {
       name: "Ahmed",
       github: "https://github.com/IAK477",
       linkedin: "https://www.linkedin.com/in/ahmed-kazi-4891a2294/",
       email: "ahmedkazi477@gmail.com",
-      role: "Core Contributor"
+      role: "Core Contributor",
+      description: "Passionate about open-source and building modern web experiences that solve real-world problems for developers. Ahmed focuses on core functionality and community-driven features."
     }
   ];
 
@@ -101,7 +103,7 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <p className="text-muted-foreground">
-                    Passionate about open-source and building modern web experiences that solve real-world problems for developers.
+                    {dev.description}
                   </p>
                   
                   <div className="flex items-center gap-3">
