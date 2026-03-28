@@ -210,14 +210,14 @@ export function InteractiveLanding({ user }: { user: User | null }) {
 
       <LandingHeader user={user} />
 
-      <div ref={fRef} className="absolute -bottom-10 -left-4">
-        <div className="text-[60vh] font-semibold leading-none text-foreground font-display mt-10">
+      <div ref={fRef} className="absolute -bottom-10 -left-4 mt-10">
+        <div className="text-[60vh] font-semibold leading-none text-foreground font-display">
           F
         </div>
       </div>
 
       <div ref={hRef} className="absolute -top-10 -right-4">
-        <div className="text-[60vh] font-semibold leading-none text-foreground font-display">
+        <div className="text-[60vh] font-semibold leading-none text-foreground font-display mt-2">
           H
         </div>
       </div>
