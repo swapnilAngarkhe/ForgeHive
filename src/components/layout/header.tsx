@@ -11,7 +11,7 @@ export function AppHeader({ user }: { user: User | null }) {
           <div className="flex items-center gap-8 h-full">
             <Link 
               href="/" 
-              className="font-bold text-xl text-foreground hover:text-accent transition-colors shrink-0"
+               className="font-display text-2xl text-foreground hover:text-accent transition-colors tracking-tighter shrink-0"
             >
               FH
             </Link>

@@ -20,6 +20,22 @@ export async function toggleFavorite(toolId: number) {
     return { error: 'Not authenticated' };
   }
 
+  // ensures profile exsist
+  const { data: profile } = await supabase
+  .from('profiles')
+  .select('id')
+  .eq('id', user.id)
+  .maybeSingle();
+
+if (!profile) {
+  await supabase.from('profiles').insert({
+    id: user.id,
+    email: user.email,
+    name: user.user_metadata?.name || 'User',
+    role: 'user',
+  });
+}
+
   // Check if the tool is already in the user's favorites
   const { data: existing } = await supabase
     .from('favorites')

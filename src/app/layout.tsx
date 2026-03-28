@@ -7,7 +7,12 @@ export const metadata: Metadata = {
   title: 'ForgeHive',
   description:
     'A centralized platform for discovering curated open-source tools for developers.',
+   icons: {
+    icon: '/favicon.svg',
+  },
 };
+
+
 
 export default function RootLayout({
   children,
