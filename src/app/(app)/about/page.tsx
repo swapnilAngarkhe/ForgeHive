@@ -91,7 +91,7 @@ export default function AboutPage() {
         {/* Developers Section */}
         <div className="space-y-8">
           <div className="flex items-center gap-3">
-            <Users className="h-8 w-8 text-accent" />
+            <+ Users className="h-8 w-8 text-accent" />
             <h2 className="text-3xl font-bold font-headline">Meet the Developers</h2>
           </div>
           
@@ -179,8 +179,8 @@ export default function AboutPage() {
                 <Badge variant="secondary">Zod</Badge>
                 <Badge variant="secondary">React Hook Form</Badge>
               </div>
-              <p className="text-sm text-muted-foreground italic flex items-center gap-2">
-                <Heart className="h-4 w-4 text-red-500 fill-current" />
+              <p className="text-sm text-muted-foreground italic flex items-center gap-4">
+                <Heart className="h-8 w-8 text-red-500 fill-current shrink-0" />
                 Every single technology used to build ForgeHive is open source itself. This is a community platform built by open source nerds, for open source nerds, leveraging the latest advancements in the React and Next.js ecosystem to empower the next generation of builders.
               </p>
             </div>
