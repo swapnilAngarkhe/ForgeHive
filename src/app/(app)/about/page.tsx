@@ -13,7 +13,8 @@ import {
   Linkedin, 
   Mail, 
   Users,
-  Copy
+  Copy,
+  Heart
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -168,7 +169,7 @@ export default function AboutPage() {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-green-500" />
-                Modern & Secure Stack
+                100% Open Source Stack
               </h3>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary">TypeScript</Badge>
@@ -178,8 +179,9 @@ export default function AboutPage() {
                 <Badge variant="secondary">Zod</Badge>
                 <Badge variant="secondary">React Hook Form</Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Built with a focus on performance, accessibility, and developer experience, ForgeHive leverages the latest advancements in the React and Next.js ecosystem.
+              <p className="text-sm text-muted-foreground italic flex items-center gap-2">
+                <Heart className="h-4 w-4 text-red-500 fill-current" />
+                Every single technology used to build ForgeHive is open source itself. This is a community platform built by open source nerds, for open source nerds, leveraging the latest advancements in the React and Next.js ecosystem to empower the next generation of builders.
               </p>
             </div>
           </CardContent>
