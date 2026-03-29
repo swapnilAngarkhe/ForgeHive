@@ -67,7 +67,7 @@ export function ProfileClientPage({ user, profile, savedTools }: ProfileClientPa
             </div>
 
             <p className="text-xs text-muted-foreground">
-              Member since: {new Date(user.created_at).toLocaleDateString()}
+              Member since: {new Date(user.created_at).toISOString().split('T')[0]}
             </p>
 
             <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mt-1">
