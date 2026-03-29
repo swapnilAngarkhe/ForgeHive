@@ -54,19 +54,21 @@ export default function RegisterPage() {
 
     const result = await signup(formData);
 
-    if (result.error) {
-      toast({
-        title: 'Registration Failed',
-        description: result.error,
-        variant: 'destructive',
-      });
-    } else {
-      toast({
-        title: 'Registration Successful',
-        description:
-          'Please check your email to verify your account and complete registration.',
-      });
-      router.push('/login');
+
+    if (result?.error) {
+      if (result.error.toLowerCase().includes('rate limit')) {
+        toast({
+          title: 'Signup limit reached',
+          description: 'Too many signup attempts. Please try again later.',
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
     }
   };
 
